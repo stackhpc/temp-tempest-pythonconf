@@ -63,9 +63,6 @@ class VolumeService(VersionedService):
     def get_service_extension_key(self):
         return 'api_extensions'
 
-    def get_supported_versions(self):
-        return ['v2', 'v3']
-
     @staticmethod
     def get_codename():
         return 'cinder'
