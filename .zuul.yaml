@@ -98,6 +98,8 @@
       - openstack/devstack
       - openstack/designate
       - openstack/designate-tempest-plugin
+      - openstack/barbican
+      - openstack/barbican-tempest-plugin
       - openstack/requirements
     roles:
       - zuul: osf/python-tempestconf
@@ -114,6 +116,7 @@
         manila: https://opendev.org/openstack/manila
         manila-ui: https://opendev.org/openstack/manila-ui
         designate: https://opendev.org/openstack/designate
+        barbican: https://opendev.org/openstack/barbican
       devstack_localrc:
         USE_PYTHON3: True
         MANILA_USE_UWSGI: False
@@ -129,6 +132,7 @@
         designate-worker: True
         designate-producer: True
         designate-mdns: True
+        barbican: True
     irrelevant-files: *irrelevant-files
 
 - job:
@@ -162,9 +166,12 @@
       Tempest job for python-tempestconf on a devstack environment as the admin user.
     run: playbooks/python-tempestconf-tempest-devstack.yaml
     vars:
+      # creator role is required for Barbican tests
+      additional_tempestconf_params: "auth.tempest_roles creator image_signature_verification.enforced False"
       test_regex:
         - 'heat_tempest_plugin'
         - 'designate_tempest_plugin'
+        - 'barbican_tempest_plugin'
       black_regex:
         - 'heat_tempest_plugin.tests.scenario.test_volumes.VolumeBackupRestoreIntegrationTest.test_cinder_volume_create_backup_restore'
         - 'heat_tempest_plugin.tests.scenario.test_server_software_config.SoftwareConfigIntegrationTest.test_server_software_config'
@@ -178,6 +185,7 @@
       plugins_paths:
         - "{{ ansible_user_dir }}/{{ zuul.projects['opendev.org/openstack/heat-tempest-plugin'].src_dir }}"
         - "{{ ansible_user_dir }}/{{ zuul.projects['opendev.org/openstack/designate-tempest-plugin'].src_dir }}"
+        - "{{ ansible_user_dir }}/{{ zuul.projects['opendev.org/openstack/barbican-tempest-plugin'].src_dir }}"
       tempest_concurrency: 2
 
 - job:
