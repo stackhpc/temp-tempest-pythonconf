@@ -89,9 +89,6 @@ def load_basic_defaults(conf):
             ("alt_password", "secrete"),
             ("alt_project_name", "alt_demo")
         ],
-        "scenario": [
-            ("img_dir", "etc")
-        ],
         "auth": [
             ("tempest_roles", "_member_"),
             ("admin_username", "admin"),
