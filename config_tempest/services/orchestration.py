@@ -17,6 +17,7 @@ from six.moves import configparser
 
 from config_tempest.constants import LOG
 from config_tempest.services.base import Service
+from config_tempest.users import Users
 
 
 class OrchestrationService(Service):
@@ -31,31 +32,27 @@ class OrchestrationService(Service):
 
     def set_default_tempest_options(self, conf):
         try:
-            uri = conf.get('identity', 'uri')
-            if 'v3' not in uri:
-                return
             sec = 'heat_plugin'
-            # Tempest doesn't differentiate between admin or demo creds anymore
-            username = conf.get('auth', 'admin_username')
-            password = conf.get('auth', 'admin_password')
-            conf.set(sec, 'username', username)
-            conf.set(sec, 'password', password)
-            conf.set(sec, 'admin_username', username)
-            conf.set(sec, 'admin_password', password)
+
+            conf.set(sec, 'username', conf.get('identity', 'username'))
+            conf.set(sec, 'password', conf.get('identity', 'password'))
+            conf.set(sec, 'admin_username', conf.get('auth', 'admin_username'))
+            conf.set(sec, 'admin_password', conf.get('auth', 'admin_password'))
             conf.set(sec, 'project_name', conf.get('identity', 'project_name'))
+            admin_project_name = conf.get('auth', 'admin_project_name')
+            conf.set(sec, 'admin_project_name', admin_project_name)
             conf.set(sec, 'region', conf.get('identity', 'region'))
 
-            conf.set(sec, 'auth_url', uri)
             v = '3' if conf.get('identity', 'auth_version') == 'v3' else '2'
+            if v == '3':
+                conf.set(sec, 'auth_url', conf.get('identity', 'uri_v3'))
+            else:
+                conf.set(sec, 'auth_url', conf.get('identity', 'uri'))
             conf.set(sec, 'auth_version', v)
 
             domain_name = conf.get('auth', 'admin_domain_name')
             conf.set(sec, 'project_domain_name', domain_name)
             conf.set(sec, 'user_domain_name', domain_name)
-
-            conf.set(sec, 'image_ssh_user', 'root')
-            conf.set(sec, 'network_for_ssh', 'public')
-            conf.set(sec, 'fixed_network_name', 'public')
 
             # should be set to True if using self-signed SSL certificates which
             # is a general case
@@ -63,6 +60,46 @@ class OrchestrationService(Service):
         except configparser.NoOptionError:
             LOG.warning("Be aware that an option required for "
                         "heat_tempest_plugin cannot be set!")
+
+        networks_client = self.client['networks']
+        subnets_client = self.client['subnets']
+        projects_client = self.client['projects']
+        roles_client = self.client['roles']
+        users_client = self.client['users']
+
+        heat_network_name = "heat_tempestconf_network"
+        heat_subnet_name = "heat_tempestconf_subnet"
+        project = conf.get('identity', 'project_name')
+
+        try:
+            network_list = networks_client.list_networks()
+            heat_network = [network for network in network_list['networks']
+                            if network['name'] == heat_network_name]
+
+            if not heat_network:
+                project_id = projects_client.get_project_by_name(project)['id']
+                heat_network = networks_client.create_network(
+                    name=heat_network_name,
+                    project_id=project_id)
+                heat_network_id = heat_network['network']['id']
+                subnets_client.create_subnet(
+                    network_id=heat_network_id,
+                    ip_version=4,
+                    cidr="192.168.199.0/24",
+                    name=heat_subnet_name)
+
+            conf.set(sec, 'fixed_network_name', heat_network_name)
+        except Exception:
+            LOG.warning("Could not create network within the %s project "
+                        "needed by heat tempest plugin!", project)
+
+        try:
+            users = Users(projects_client, roles_client, users_client, conf)
+            username = conf.get('identity', 'username')
+            users.give_role_to_user(username, "member")
+        except Exception:
+            LOG.warning("Could not assign role 'member' to user '%s'!",
+                        username)
 
     def post_configuration(self, conf, is_service):
         if conf.has_section('compute'):
@@ -79,3 +116,7 @@ class OrchestrationService(Service):
             if 'image_ref_alt' in compute_options:
                 conf.set('heat_plugin', 'image_ref',
                          conf.get('compute', 'image_ref_alt'))
+        if conf.has_section('network'):
+            network = conf.get('network', 'floating_network_name')
+            conf.set('heat_plugin', 'network_for_ssh', network)
+            conf.set('heat_plugin', 'floating_network_name', network)

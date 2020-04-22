@@ -207,7 +207,6 @@ def set_options(conf, deployer_input, non_admin, image_path, overrides=[],
 
     uri = conf.get("identity", "uri")
     if "v3" in uri:
-        conf.set("identity", "auth_version", "v3")
         conf.set("identity", "uri_v3", uri)
     else:
         # TODO(arxcruz) make a check if v3 is enabled
@@ -521,11 +520,12 @@ def config_tempest(**kwargs):
 
     credentials = Credentials(conf, not kwargs.get('non_admin', False))
     clients = ClientManager(conf, credentials)
-    services = Services(clients, conf, credentials)
 
     if kwargs.get('create', False) and kwargs.get('test_accounts') is None:
         users = Users(clients.projects, clients.roles, clients.users, conf)
         users.create_tempest_users()
+
+    services = Services(clients, conf, credentials)
 
     if services.is_service(**{"type": "compute"}):
         flavors = Flavors(clients.flavors, kwargs.get('create', False), conf,

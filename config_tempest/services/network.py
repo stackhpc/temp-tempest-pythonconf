@@ -27,7 +27,7 @@ class NetworkService(VersionedService):
 
     def create_tempest_networks(self, conf, network_id):
         LOG.info("Setting up network")
-        self.client = self.client.get_neutron_client()
+        self.client = self.client.networks
         self.create_tempest_networks_neutron(conf, network_id)
 
     def create_tempest_networks_neutron(self, conf, public_network_id):

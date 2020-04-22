@@ -29,6 +29,7 @@ from tempest.lib.services.identity.v3 import services_client as s_client
 from tempest.lib.services.identity.v3 import users_client as users_v3_client
 from tempest.lib.services.image.v2 import images_client
 from tempest.lib.services.network import networks_client
+from tempest.lib.services.network import subnets_client
 from tempest.lib.services.object_storage import account_client
 try:
     # Since Rocky, volume.v3.services_client is the default
@@ -155,20 +156,21 @@ class ClientManager(object):
             self.identity_region,
             **default_params)
 
-        self.networks = None
+        self.networks = networks_client.NetworksClient(
+            self.auth_provider,
+            conf.get_defaulted('network', 'catalog_type'),
+            self.identity_region,
+            endpoint_type=conf.get_defaulted('network',
+                                             'endpoint_type'),
+            **default_params)
 
-        def create_neutron_client():
-            if self.networks is None:
-                self.networks = networks_client.NetworksClient(
-                    self.auth_provider,
-                    conf.get_defaulted('network', 'catalog_type'),
-                    self.identity_region,
-                    endpoint_type=conf.get_defaulted('network',
-                                                     'endpoint_type'),
-                    **default_params)
-            return self.networks
-
-        self.get_neutron_client = create_neutron_client
+        self.subnets = subnets_client.SubnetsClient(
+            self.auth_provider,
+            conf.get_defaulted('network', 'catalog_type'),
+            self.identity_region,
+            endpoint_type=conf.get_defaulted('network',
+                                             'endpoint_type'),
+            **default_params)
 
         # Set admin project id needed for keystone v3 tests.
         if creds.admin:
@@ -237,6 +239,12 @@ class ClientManager(object):
             return self.volume_client
         elif service_name == "metering":
             return self.service_client
+        elif service_name == "orchestration":
+            return {'projects': self.projects,
+                    'roles': self.roles,
+                    'users': self.users,
+                    'networks': self.networks,
+                    'subnets': self.subnets}
         else:
             return None
 

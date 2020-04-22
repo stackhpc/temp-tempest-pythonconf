@@ -60,7 +60,10 @@ class Users(object):
         proj_id = self.projects_client.get_project_by_name(project_name)['id']
         users = self.users_client.list_users()
         user_ids = [u['id'] for u in users['users'] if u['name'] == username]
+        if not user_ids:
+            raise Exception("user %s not found" % username)
         user_id = user_ids[0]
+
         roles = self.roles_client.list_roles()
         self.check_user_roles(roles)
         role_ids = [r['id'] for r in roles['roles'] if r['name'] == role_name]
