@@ -23,8 +23,11 @@ from tempest.lib import exceptions
 
 class ShareService(VersionedService):
 
-    def get_share_pools(self):
-        body = self.do_get(self.service_url + '/scheduler-stats/pools')
+    def get_share_pools(self, detail=False):
+        url = self.service_url + '/scheduler-stats/pools'
+        if detail:
+            url += '/detail'
+        body = self.do_get(url)
         body = json.loads(body)
         return body
 
@@ -35,16 +38,21 @@ class ShareService(VersionedService):
             conf.set('share', 'max_api_microversion', m_vs['max_microversion'])
 
         try:
-            pools = self.get_share_pools()['pools']
+            pools = self.get_share_pools(detail=True)['pools']
         except exceptions.Forbidden:
             C.LOG.warning("User has no permissions to list back-end storage "
                           "pools - storage back-ends can't be discovered.")
             return
         if pools:
-            backends = [
-                pool['backend'] for pool in pools
-            ]
+            backends = []
+            enable_protocols = []
+            for pool in pools:
+                backends.append(pool['backend'])
+                protocol = pool['capabilities']['storage_protocol'].lower()
+                enable_protocols.extend(protocol.split('_'))
+
             conf.set('share', 'backend_names', ','.join(backends))
+            conf.set('share', 'enable_protocols', ','.join(enable_protocols))
             if len(backends) > 1:
                 conf.set('share', 'multi_backend', 'True')
 
