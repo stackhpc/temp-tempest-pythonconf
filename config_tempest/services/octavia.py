@@ -14,10 +14,10 @@
 # under the License.
 
 from config_tempest.services.base import VersionedService
+import json
 
 
 class LoadBalancerService(VersionedService):
-
     def set_versions(self):
         super(LoadBalancerService, self).set_versions(top_level=False)
 
@@ -34,6 +34,23 @@ class LoadBalancerService(VersionedService):
     def get_codename():
         return 'octavia'
 
+    def list_drivers(self):
+        """List lbaas drivers"""
+        body = self.do_get(self.service_url + '/v2/lbaas/providers')
+        body = json.loads(body)
+        names = [
+            '{p[name]}:{p[description]}'.format(p=i) for i in body['providers']
+        ]
+        return names
+
     def post_configuration(self, conf, is_service):
-        conf.set('load_balancer', 'member_role',
-                 conf.get('auth', 'tempest_roles').split(',')[0])
+        if not conf.has_option('auth', 'tempest_roles') \
+                or conf.get('auth', 'tempest_roles') in ['', None]:
+            conf.set('load_balancer', 'member_role', 'member')
+        else:
+            conf.set('load_balancer', 'member_role',
+                     conf.get('auth', 'tempest_roles').split(',')[0])
+        conf.set('load_balancer', 'region', conf.get('identity', 'region'))
+        conf.set('load_balancer',
+                 'enabled_provider_drivers',
+                 ','.join(self.list_drivers()))

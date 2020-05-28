@@ -20,6 +20,7 @@
         - tripleo-ci-centos-8-scenario002-standalone
         - tripleo-ci-centos-8-standalone
         - refstack-client-devstack-tempestconf
+        - tripleo-ci-centos-8-scenario010-standalone
     gate:
       jobs:
         - openstack-tox-pep8
@@ -31,6 +32,7 @@
         - tripleo-ci-centos-8-scenario002-standalone
         - tripleo-ci-centos-8-standalone
         - refstack-client-devstack-tempestconf
+        - tripleo-ci-centos-8-scenario010-standalone
     experimental:
       jobs:
         - python-tempestconf-tempest-devstack-demo-train

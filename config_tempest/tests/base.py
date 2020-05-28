@@ -31,7 +31,6 @@ logging.disable(logging.CRITICAL)
 
 
 class BaseConfigTempestTest(base.BaseTestCase):
-
     """Test case base class for all config_tempest unit tests"""
 
     FAKE_V3_VERSIONS = (
@@ -105,7 +104,6 @@ class BaseConfigTempestTest(base.BaseTestCase):
 
 
 class BaseServiceTest(base.BaseTestCase):
-
     """Test case base class for all api_discovery unit tests"""
 
     FAKE_TOKEN = "s6d5f45sdf4s564f4s6464sdfsd514"
@@ -210,6 +208,17 @@ class BaseServiceTest(base.BaseTestCase):
             }
         }
     )
+    FAKE_LBAAS_PROVIDERS = (
+        {
+            "providers": [{
+                "name": "amphora",
+                "description": "The Octavia Amphora driver."
+            }, {
+                "name": "octavia",
+                "description": "Deprecated alias of the Octavia driver."
+            }]
+        }
+    )
     FAKE_STORAGE_EXTENSIONS = (
         {
             "formpost": {},
@@ -257,12 +266,12 @@ class BaseServiceTest(base.BaseTestCase):
             {
                 'resources': {
                     URL + 'OS-INHERIT/1.0/rel/domain_user_' +
-                          'role_inherited_to_projects': "",
+                    'role_inherited_to_projects': "",
 
                     URL + 'OS-SIMPLE-CERT/1.0/rel/ca_certificate': "",
 
                     URL + 'OS-EP-FILTER/1.0/rel/endpoint_group_to_' +
-                          'project_association': "",
+                    'project_association': "",
 
                     URL + 'OS-EP-FILTER/1.0/rel/project_endpoint': "",
 
