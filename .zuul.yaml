@@ -47,14 +47,14 @@
       - openstack/manila
       - openstack/manila-ui
       - openstack/manila-tempest-plugin
-      - openstack/python-tempestconf
+      - osf/python-tempestconf
       - openstack/tempest
       - openstack/devstack
       - openstack/designate
       - openstack/designate-tempest-plugin
       - openstack/requirements
     roles:
-      - zuul: openstack/python-tempestconf
+      - zuul: osf/python-tempestconf
       - zuul: openstack/tempest
       - zuul: openstack/devstack
     vars:
@@ -95,13 +95,13 @@
     description: Base job for python-tempestconf on packstack environment
     required-projects:
       - x/packstack
-      - openstack/python-tempestconf
+      - osf/python-tempestconf
       - openstack/tempest
       - openstack/devstack
     post-run: playbooks/upload-logs.yaml
     roles:
       - zuul: x/packstack
-      - zuul: openstack/python-tempestconf
+      - zuul: osf/python-tempestconf
       - zuul: openstack/tempest
       - zuul: openstack/devstack
     vars:
