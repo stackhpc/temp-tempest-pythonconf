@@ -1,3 +1,7 @@
+- name: Ensure tox is installed
+  include_role:
+    name: ensure-tox
+
 - name: Prepare tempest venv
   become: yes
   command: tox -r --notest -efull

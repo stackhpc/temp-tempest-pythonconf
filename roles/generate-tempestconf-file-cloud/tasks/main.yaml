@@ -1,4 +1,8 @@
 - block:
+  - name: Ensure python-virtualenv is present
+    include_role:
+       name: ensure-virtualenv
+
   - name: Create python-tempestconf venv with latest pip, setuptools and pbr
     pip:
         virtualenv: "{{ virtualenvs.tempestconf }}"

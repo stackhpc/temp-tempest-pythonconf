@@ -23,12 +23,24 @@
         name: setup-devstack-source-dirs
     # setup-tempest-* and acl-devstack-files roles are inherited from
     # openstack/tempest project
+
     - name: Setup Tempest Run Directory
       include_role:
         name: setup-tempest-run-dir
     - name: Setup Tempest Data Directory
       include_role:
         name: setup-tempest-data-dir
+
+    # NOTE: packstack jobs are failing on Run Tempest task
+    # it is because tox command is not found. Adding 'ensure-tox'
+    # role here to make sure that tox is installed and it
+    # will not break the tempest tests.
+    - name: Ensure tox is installed
+      include_role:
+        name: ensure-tox
+      vars:
+        ensure_global_symlinks: True
+
     - name: ACL devstack files
       include_role:
         name: acl-devstack-files

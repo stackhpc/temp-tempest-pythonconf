@@ -23,6 +23,17 @@
     - name: Setup Tempest Data Directory
       include_role:
         name: setup-tempest-data-dir
+
+    # NOTE: devstack jobs are failing on Run Tempest task
+    # it is because tox command is not found. Adding 'ensure-tox'
+    # role here to make sure that tox is installed and it
+    # will not break the tempest tests.
+    - name: Ensure tox is installed
+      include_role:
+        name: ensure-tox
+      vars:
+        ensure_global_symlinks: True
+
     - name: ACL devstack files
       include_role:
         name: acl-devstack-files
@@ -38,6 +49,7 @@
     - name: Generate tempest configuration file based on cloud credentials
       include_role:
         name: generate-tempestconf-file-cloud
+
     # run-tempest role is inherited from openstack/tempest project
     - name: Run Tempest Tests
       include_role:
