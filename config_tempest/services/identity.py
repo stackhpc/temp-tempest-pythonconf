@@ -117,6 +117,11 @@ class IdentityService(VersionedService):
     def set_default_tempest_options(self, conf):
         """Set keystone feature flags based upon version ID."""
         supported_versions = self.get_versions()
+
+        if supported_versions:
+            major, minor = supported_versions[0].split('.')
+            conf.set('identity', 'auth_version', major)
+
         if len(supported_versions) <= 1:
             return
         for version in supported_versions:

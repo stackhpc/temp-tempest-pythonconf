@@ -92,3 +92,5 @@ class TestIdentityService(BaseServiceTest):
         self.assertEqual(
             conf.get('identity-feature-enabled',
                      'forbid_global_implied_dsr'), 'True')
+        self.assertEqual(
+            conf.get('identity', 'auth_version'), 'v3')
