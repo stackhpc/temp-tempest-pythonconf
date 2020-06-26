@@ -42,7 +42,7 @@ class TestFlavors(BaseConfigTempestTest):
         mock_function = mock.Mock(return_value=return_value)
         self.useFixture(MonkeyPatch(self.CLIENT_MOCK + '.list_flavors',
                                     mock_function))
-        self.Service = Flavors(self.client, True, self.conf, 64, 1)
+        self.Service = Flavors(self.client, True, self.conf, 128, 1)
 
     def test_create_tempest_flavors(self):
         self.Service.flavor_list = []
@@ -52,8 +52,8 @@ class TestFlavors(BaseConfigTempestTest):
         self.Service.create_tempest_flavors()
         self.assertEqual(self.conf.get('compute', 'flavor_ref'), "FakeID")
         self.assertEqual(self.conf.get('compute', 'flavor_ref_alt'), "FakeID")
-        calls = [mock.call('m1.nano', 64, 1, 1, no_rng=False),
-                 mock.call('m1.micro', 128, 1, 1, no_rng=False)]
+        calls = [mock.call('m1.nano', 128, 1, 1, no_rng=False),
+                 mock.call('m1.micro', 192, 1, 1, no_rng=False)]
         mock_function.assert_has_calls(calls, any_order=True)
 
     def check_call_of_discover_smallest_flavor(self):
