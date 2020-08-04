@@ -103,7 +103,7 @@ class BaseConfigTempestTest(base.BaseTestCase):
         return ClientManager(conf, creds)
 
 
-class BaseServiceTest(base.BaseTestCase):
+class BaseServiceTest(BaseConfigTempestTest):
     """Test case base class for all api_discovery unit tests"""
 
     FAKE_TOKEN = "s6d5f45sdf4s564f4s6464sdfsd514"

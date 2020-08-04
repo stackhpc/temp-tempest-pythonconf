@@ -16,25 +16,24 @@
 from unittest import mock
 
 from config_tempest.services.octavia import LoadBalancerService
-from config_tempest.tests.base import BaseConfigTempestTest
-from config_tempest.tests.base import BaseServiceTest as bst
+from config_tempest.tests.base import BaseServiceTest
 
 
-class TestOctaviaService(BaseConfigTempestTest):
+class TestOctaviaService(BaseServiceTest):
     def setUp(self):
         super(TestOctaviaService, self).setUp()
         self.conf = self._get_conf("v2", "v3")
         self.clients = self._get_clients(self.conf)
         self.Service = LoadBalancerService("ServiceName",
                                            "ServiceType",
-                                           bst.FAKE_URL + "v2.0/",
-                                           bst.FAKE_TOKEN,
+                                           self.FAKE_URL + "v2.0/",
+                                           self.FAKE_TOKEN,
                                            disable_ssl_validation=False)
-        self.Service.client = bst.FakeServiceClient(
+        self.Service.client = self.FakeServiceClient(
             services={"services": [{"name": "octavia", "enabled": True}]}
         )
         self.conf.set("identity", "region", "regionOne")
-        bst._fake_service_do_get_method(self, bst.FAKE_LBAAS_PROVIDERS)
+        self._fake_service_do_get_method(self.FAKE_LBAAS_PROVIDERS)
 
     def test_list_drivers(self):
         expected_resp = [
