@@ -17,10 +17,19 @@
         - python-tempestconf-tempest-packstack-demo:
             voting: false
         - python-tempestconf-tempest-devstack-admin-plugins
-        - tripleo-ci-centos-8-scenario002-standalone
-        - tripleo-ci-centos-8-standalone
+        - tripleo-ci-centos-8-scenario002-standalone:
+            irrelevant-files: &irrelevant-files
+              - config_tempest/tests/.*$
+              - ^doc/.*$
+              - ^releasenotes/.*$
+              - ^.*\.rst$
+        - tripleo-ci-centos-8-standalone:
+            irrelevant-files:
+              << *irrelevant-files
         - refstack-client-devstack-tempestconf
-        - tripleo-ci-centos-8-scenario010-standalone
+        - tripleo-ci-centos-8-scenario010-standalone:
+            irrelevant-files:
+              << *irrelevant-files
     gate:
       jobs:
         - openstack-tox-pep8
@@ -29,10 +38,16 @@
         - python-tempestconf-tempest-devstack-admin-stein
         - python-tempestconf-tempest-devstack-demo
         - python-tempestconf-tempest-devstack-admin-plugins
-        - tripleo-ci-centos-8-scenario002-standalone
-        - tripleo-ci-centos-8-standalone
+        - tripleo-ci-centos-8-scenario002-standalone:
+            irrelevant-files:
+              << *irrelevant-files
+        - tripleo-ci-centos-8-standalone:
+            irrelevant-files:
+              << *irrelevant-files
         - refstack-client-devstack-tempestconf
-        - tripleo-ci-centos-8-scenario010-standalone
+        - tripleo-ci-centos-8-scenario010-standalone:
+            irrelevant-files:
+              << *irrelevant-files
     experimental:
       jobs:
         - python-tempestconf-tempest-devstack-demo-train
@@ -86,10 +101,7 @@
         designate-producer: True
         designate-mdns: True
     irrelevant-files:
-      - config_tempest/tests/.*$
-      - ^doc/.*$
-      - ^releasenotes/.*$
-      - ^.*\.rst$
+      << *irrelevant-files
 
 - job:
     name: python-tempestconf-packstack-base
@@ -114,10 +126,7 @@
         /opt/stack/tempest/tempest.log: logs
         /etc/openstack/accounts.yaml: logs
     irrelevant-files:
-      - config_tempest/tests/.*$
-      - ^doc/.*$
-      - ^releasenotes/.*$
-      - ^.*\.rst$
+      << *irrelevant-files
 
 - job:
     name: python-tempestconf-tempest-devstack-admin-plugins
