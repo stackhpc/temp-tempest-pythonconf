@@ -105,7 +105,7 @@
 
   - name: Compare tempest.conf and tempest_profile.conf
     shell: |
-        python ./roles/generate-tempestconf-file-cloud/tasks/compare-ini.py ./etc/cloud_tempest.conf ./etc/tempest_profile.conf
+        python3 ./roles/generate-tempestconf-file-cloud/tasks/compare-ini.py ./etc/cloud_tempest.conf ./etc/tempest_profile.conf
     args:
         chdir: "{{ tempestconf_src_relative_path }}"
 

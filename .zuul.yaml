@@ -1,13 +1,12 @@
 - project:
     templates:
       - openstack-cover-jobs
-      - openstack-python36-jobs
+      - openstack-python3-wallaby-jobs
       - openstack-python37-jobs
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
     check:
       jobs:
-        - openstack-tox-pep8
         - python-tempestconf-tempest-devstack-admin
         - python-tempestconf-tempest-devstack-admin-train
         - python-tempestconf-tempest-devstack-admin-stein
@@ -30,7 +29,6 @@
             irrelevant-files: *irrelevant-files
     gate:
       jobs:
-        - openstack-tox-pep8
         - python-tempestconf-tempest-devstack-admin
         - python-tempestconf-tempest-devstack-admin-train
         - python-tempestconf-tempest-devstack-admin-stein

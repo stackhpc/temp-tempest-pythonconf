@@ -105,9 +105,9 @@ class IdentityService(VersionedService):
         try:
             versions = []
             for v in body['versions']['values']:
-                    # TripleO is in transition to v3 only, so the environment
-                    # still returns v2 versions even though they're deprecated.
-                    # Therefor pick only versions with stable status.
+                # TripleO is in transition to v3 only, so the environment
+                # still returns v2 versions even though they're deprecated.
+                # Therefor pick only versions with stable status.
                 if v['status'] == 'stable':
                     versions.append(v['id'])
             return versions

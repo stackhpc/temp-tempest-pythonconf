@@ -143,7 +143,7 @@ class ImageService(VersionedService):
             C.LOG.info("Creating image '%s'", image_name)
             if image_source.startswith("http:") or \
                image_source.startswith("https:"):
-                    self._download_file(image_source, image_dest)
+                self._download_file(image_source, image_dest)
             else:
                 try:
                     shutil.copyfile(image_source, image_dest)
