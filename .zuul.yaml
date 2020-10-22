@@ -16,17 +16,33 @@
         - python-tempestconf-tempest-packstack-demo:
             voting: false
         - python-tempestconf-tempest-devstack-admin-plugins
+        - tripleo-ci-centos-8-content-provider
         - tripleo-ci-centos-8-scenario002-standalone:
             irrelevant-files: &irrelevant-files
               - config_tempest/tests/.*$
               - ^doc/.*$
               - ^releasenotes/.*$
               - ^.*\.rst$
+            vars: &standalone
+              consumer_job: true
+              build_container_images: false
+              tags:
+                - standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
+
         - tripleo-ci-centos-8-standalone:
             irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
+
         - refstack-client-devstack-tempestconf
         - tripleo-ci-centos-8-scenario010-standalone:
             irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
     gate:
       jobs:
         - python-tempestconf-tempest-devstack-admin
@@ -34,13 +50,23 @@
         - python-tempestconf-tempest-devstack-admin-stein
         - python-tempestconf-tempest-devstack-demo
         - python-tempestconf-tempest-devstack-admin-plugins
+        - tripleo-ci-centos-8-content-provider
         - tripleo-ci-centos-8-scenario002-standalone:
             irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
         - tripleo-ci-centos-8-standalone:
             irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
         - refstack-client-devstack-tempestconf
         - tripleo-ci-centos-8-scenario010-standalone:
             irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
     experimental:
       jobs:
         - python-tempestconf-tempest-devstack-demo-train
