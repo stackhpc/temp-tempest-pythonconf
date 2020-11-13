@@ -37,7 +37,6 @@ obtained by querying the cloud.
 import argparse
 import logging
 import os
-import six
 import sys
 
 import openstack
@@ -133,10 +132,7 @@ def read_deployer_input(deployer_input_file, conf):
     """
     LOG.info("Adding options from deployer-input file '%s'",
              deployer_input_file)
-    if six.PY3:
-        deployer_input = configparser.ConfigParser()
-    else:
-        deployer_input = configparser.SafeConfigParser()
+    deployer_input = configparser.ConfigParser()
     deployer_input.read(deployer_input_file)
     for section in deployer_input.sections():
         # There are no deployer input options in DEFAULT

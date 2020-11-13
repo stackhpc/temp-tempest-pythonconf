@@ -14,7 +14,6 @@
 # under the License.
 
 import os
-import six
 import sys
 
 from config_tempest import constants as C
@@ -23,7 +22,7 @@ from six.moves import configparser
 import tempest.config
 
 
-class TempestConf(configparser.SafeConfigParser):
+class TempestConf(configparser.ConfigParser):
     # causes the config parser to preserve case of the options
     optionxform = str
 
@@ -35,10 +34,7 @@ class TempestConf(configparser.SafeConfigParser):
 
     def __init__(self, write_credentials=True, **kwargs):
         self.write_credentials = write_credentials
-        if six.PY3:
-            configparser.ConfigParser.__init__(self, **kwargs)
-        else:
-            configparser.SafeConfigParser.__init__(self, **kwargs)
+        configparser.ConfigParser.__init__(self, **kwargs)
 
     def get_bool_value(self, value):
         """Returns boolean value of the string value given.
@@ -76,7 +72,7 @@ class TempestConf(configparser.SafeConfigParser):
                           key, section)
 
     def set(self, section, key, value, priority=False):
-        """Set value in configuration, similar to `SafeConfigParser.set`
+        """Set value in configuration, similar to `ConfigParser.set`
 
         Creates non-existent sections. Keeps track of options which were
         specified by the user and should not be normally overwritten.
@@ -105,10 +101,7 @@ class TempestConf(configparser.SafeConfigParser):
         if priority:
             self.priority_sectionkeys.add((section, key))
         C.LOG.debug("Setting [%s] %s = %s", section, key, value)
-        if six.PY3:
-            configparser.ConfigParser.set(self, section, key, value)
-        else:
-            configparser.SafeConfigParser.set(self, section, key, value)
+        configparser.ConfigParser.set(self, section, key, value)
         return True
 
     def write(self, out_path):
@@ -118,10 +111,7 @@ class TempestConf(configparser.SafeConfigParser):
                        "writing credentials is disabled.")
             self.remove_values(C.ALL_CREDENTIALS_KEYS)
         with open(out_path, 'w') as f:
-            if six.PY3:
-                configparser.ConfigParser.write(self, f)
-            else:
-                configparser.SafeConfigParser.write(self, f)
+            configparser.ConfigParser.write(self, f)
 
     def remove_values(self, to_remove):
         """Remove values from configuration file specified in arguments.
