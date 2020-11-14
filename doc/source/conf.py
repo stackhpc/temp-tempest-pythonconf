@@ -21,13 +21,15 @@ extensions = [
     'openstackdocstheme',
     #'sphinx.ext.intersphinx',
     'sphinx.ext.autodoc',
+    'sphinxcontrib.rsvgconverter',
     'sphinxarg.ext'
 ]
 
 html_theme = 'openstackdocs'
 
 # openstackdocstheme options
-openstackdocs_repo_name = 'openstack/python-tempestconf'
+openstackdocs_repo_name = 'osf/python-tempestconf'
+openstackdocs_pdf_link = True
 openstackdocs_use_storyboard = True
 
 # autodoc generation is a bit aggressive and a nuisance when doing heavy
@@ -70,10 +72,15 @@ htmlhelp_basename = '%sdoc' % project
 # [howto/manual]).
 latex_documents = [
     ('index',
-     '%s.tex' % project,
+     'doc-%s.tex' % project,
      u'%s Documentation' % project,
      u'Red Hat, Inc.', 'manual'),
 ]
+
+latex_use_xindy = False
+latex_elements = {
+    'extraclassoptions': 'openany,oneside',
+}
 
 # Example configuration for intersphinx: refer to the Python standard library.
 #intersphinx_mapping = {'http://docs.python.org/': None}
