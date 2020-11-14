@@ -16,13 +16,14 @@
         - python-tempestconf-tempest-packstack-demo:
             voting: false
         - python-tempestconf-tempest-devstack-admin-plugins
-        - tripleo-ci-centos-8-content-provider
-        - tripleo-ci-centos-8-scenario002-standalone:
+        - tripleo-ci-centos-8-content-provider:
             irrelevant-files: &irrelevant-files
               - config_tempest/tests/.*$
               - ^doc/.*$
               - ^releasenotes/.*$
               - ^.*\.rst$
+        - tripleo-ci-centos-8-scenario002-standalone:
+            irrelevant-files: *irrelevant-files
             vars: &standalone
               consumer_job: true
               build_container_images: false
@@ -50,7 +51,8 @@
         - python-tempestconf-tempest-devstack-admin-stein
         - python-tempestconf-tempest-devstack-demo
         - python-tempestconf-tempest-devstack-admin-plugins
-        - tripleo-ci-centos-8-content-provider
+        - tripleo-ci-centos-8-content-provider:
+            irrelevant-files: *irrelevant-files
         - tripleo-ci-centos-8-scenario002-standalone:
             irrelevant-files: *irrelevant-files
             vars: *standalone
