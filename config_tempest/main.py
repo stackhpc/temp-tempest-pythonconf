@@ -175,12 +175,10 @@ def set_options(conf, deployer_input, non_admin, image_path, overrides=[],
     conf.set('image', 'image_path', image_path)
 
     if deployer_input and os.path.isfile(deployer_input):
-        LOG.info("Reading deployer input from file {}".format(
-            deployer_input))
+        LOG.info("Reading deployer input from file %s", deployer_input)
         read_deployer_input(deployer_input, conf)
     elif os.path.isfile(C.DEPLOYER_INPUT) and not no_default_deployer:
-        LOG.info("Reading deployer input from file {}".format(
-            C.DEPLOYER_INPUT))
+        LOG.info("Reading deployer input from file %s", C.DEPLOYER_INPUT)
         read_deployer_input(C.DEPLOYER_INPUT, conf)
 
     if non_admin:

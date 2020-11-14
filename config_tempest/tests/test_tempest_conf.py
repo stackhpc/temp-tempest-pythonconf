@@ -96,9 +96,9 @@ class TestTempestConf(BaseConfigTempestTest):
         conf_exts = conf_exts.split(',')
         for ext in api_exts.split(','):
             if ext in remove_exts:
-                self.assertFalse(ext in conf_exts)
+                self.assertNotIn(ext, conf_exts)
             else:
-                self.assertTrue(ext in conf_exts)
+                self.assertIn(ext, conf_exts)
 
     def test_remove_values_having_hyphen(self):
         api_exts = "dvr,l3-flavors,rbac-policies,project-id"
@@ -113,9 +113,9 @@ class TestTempestConf(BaseConfigTempestTest):
         conf_exts = conf_exts.split(',')
         for ext in api_exts.split(','):
             if ext in remove_exts:
-                self.assertFalse(ext in conf_exts)
+                self.assertNotIn(ext, conf_exts)
             else:
-                self.assertTrue(ext in conf_exts)
+                self.assertIn(ext, conf_exts)
 
     @mock.patch('config_tempest.tempest_conf.C.LOG')
     def test_remove_not_defined_values(self, mock_logging):
@@ -138,7 +138,7 @@ class TestTempestConf(BaseConfigTempestTest):
         conf_exts = self.conf.get("compute-feature-enabled", "api_extensions")
         conf_exts = conf_exts.split(',')
         self.assertEqual(len(conf_exts), 4)
-        self.assertTrue("project-id" in conf_exts)
+        self.assertIn("project-id", conf_exts)
 
     def test_append_values_with_overrides(self):
         # Test if --add option can override an option which was
@@ -159,7 +159,7 @@ class TestTempestConf(BaseConfigTempestTest):
         # if there are still 3 extensions, no new was added
         self.assertEqual(len(conf_exts), 3)
         # option added via --add shouldn't be there
-        self.assertFalse("project-id" in conf_exts)
-        self.assertTrue("dvr" in conf_exts)
-        self.assertTrue("l3-flavors" in conf_exts)
-        self.assertTrue("rbac-policies" in conf_exts)
+        self.assertNotIn("project-id", conf_exts)
+        self.assertIn("dvr", conf_exts)
+        self.assertIn("l3-flavors", conf_exts)
+        self.assertIn("rbac-policies", conf_exts)

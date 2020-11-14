@@ -49,8 +49,8 @@ class NetworkService(VersionedService):
         return 'api_extensions'
 
     def _supplied_network(self):
-        LOG.info("Looking for existing network id: {0}"
-                 "".format(self._public_network_id))
+        LOG.info("Looking for existing network id: %s",
+                 self._public_network_id)
         # check if network exists
         network_list = self.client.list_networks()
         for network in network_list['networks']:
@@ -66,7 +66,7 @@ class NetworkService(VersionedService):
         network_list = self.client.list_networks()
         for network in network_list['networks']:
             if network['router:external'] and network['subnets']:
-                LOG.info("Found network, using: {0}".format(network['id']))
+                LOG.info("Found network, using: %s", network['id'])
                 self._public_network_id = network['id']
                 self._public_network_name = network['name']
                 break

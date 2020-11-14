@@ -100,8 +100,7 @@ class Services(object):
                     service_data = self.get_service_data(s_name, s_type)
                     url = None
                     if not service_data:
-                        C.LOG.warning('No endpoint data found for {}'.format(
-                            s_name))
+                        C.LOG.warning('No endpoint data found for %s', s_name)
                     else:
                         url = self.parse_endpoints(self.get_endpoints(
                             service_data), s_type)
