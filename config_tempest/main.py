@@ -488,9 +488,14 @@ def get_cloud_creds(args_namespace):
 
     cloud_creds = cloud.config.get_auth_args()
     region_name = cloud.config.config['region_name']
-
     if region_name:
         cloud_creds['region_name'] = region_name
+
+    request_args = cloud.config.get_requests_verify_args()
+    cloud_creds['request_args'] = {
+        'verify': request_args[0],
+        'cert': request_args[1],
+    }
 
     return cloud_creds
 
@@ -512,7 +517,9 @@ def config_tempest(**kwargs):
                 accounts_path,
                 kwargs.get('cloud_creds'))
 
-    credentials = Credentials(conf, not kwargs.get('non_admin', False))
+    request_args = kwargs.get('cloud_creds', {}).get('request_args', {})
+    credentials = Credentials(conf, not kwargs.get('non_admin', False),
+                              **request_args)
     clients = ClientManager(conf, credentials)
 
     if kwargs.get('create', False) and kwargs.get('test_accounts') is None:

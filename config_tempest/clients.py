@@ -88,7 +88,7 @@ class ClientManager(object):
         self.identity_region = creds.identity_region
         self.auth_provider = creds.get_auth_provider()
 
-        default_params = self._get_default_params(conf)
+        default_params = creds.get_ssl_certificate_validation()
         compute_params = self._get_compute_params(conf)
         compute_params.update(default_params)
 
@@ -176,15 +176,6 @@ class ClientManager(object):
         if creds.admin:
             project = self.projects.get_project_by_name(creds.project_name)
             conf.set('auth', 'admin_project_id', project['id'])
-
-    def _get_default_params(self, conf):
-        default_params = {
-            'disable_ssl_certificate_validation':
-                conf.get_defaulted('identity',
-                                   'disable_ssl_certificate_validation'),
-            'ca_certs': conf.get_defaulted('identity', 'ca_certificates_file')
-        }
-        return default_params
 
     def _get_compute_params(self, conf):
         compute_params = {

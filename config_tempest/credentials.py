@@ -25,7 +25,7 @@ class Credentials(object):
     Wrapps credentials obtained from TempestConf object and Tempest
     credentialsfrom auth library.
     """
-    def __init__(self, conf, admin):
+    def __init__(self, conf, admin, **kwargs):
         """Init method of Credentials.
 
         :type conf: TempestConf object
@@ -34,19 +34,42 @@ class Credentials(object):
         """
         self.admin = admin
         self._conf = conf
+        self.verify = kwargs.get('verify', True)
+        self.cert = kwargs.get('cert', None)
         self.username = self.get_credential('username')
         self.password = self.get_credential('password')
         self.project_name = self.get_credential('project_name')
         self.identity_version = self._get_identity_version()
         self.api_version = 3 if self.identity_version == "v3" else 2
         self.identity_region = self._conf.get_defaulted('identity', 'region')
-        self.disable_ssl_certificate_validation = self._conf.get_defaulted(
-            'identity',
-            'disable_ssl_certificate_validation'
-        )
-        self.ca_certs = self._conf.get_defaulted('identity',
-                                                 'ca_certificates_file')
+        self.set_ssl_certificate_validation()
         self.set_credentials()
+
+    def set_ssl_certificate_validation(self):
+        # is there a specific CA bundle to use?
+        # self.verify is either a boolean, in which case it controls whether
+        # server's TLS certificates are verified, or a string, in which case
+        # it is a path to a CA bundle to use, default in requests package
+        # is True.
+        if isinstance(self.verify, str):
+            self.disable_ssl_certificate_validation = False
+            self.ca_certs = self.verify
+            self._conf.set('identity', 'ca_certificates_file', self.ca_certs)
+        else:
+            self.disable_ssl_certificate_validation = self._conf.get_defaulted(
+                'identity', 'disable_ssl_certificate_validation'
+            )
+            self.ca_certs = self._conf.get_defaulted('identity',
+                                                     'ca_certificates_file')
+        self._conf.set('identity', 'disable_ssl_certificate_validation',
+                       str(self.disable_ssl_certificate_validation))
+
+    def get_ssl_certificate_validation(self):
+        return {
+            'disable_ssl_certificate_validation':
+                self.disable_ssl_certificate_validation,
+            'ca_certs': self.ca_certs,
+        }
 
     def get_credential(self, key):
         """Helper for getting credential by its name.
@@ -65,8 +88,8 @@ class Credentials(object):
             # tool keeps them in identity section for further usage
             return self._conf.get_defaulted('identity', key)
 
-    def _list_versions(self, base_url):
-        resp = requests.get(base_url)
+    def _list_versions(self, base_url, **kwargs):
+        resp = requests.get(base_url, **kwargs)
         data = resp.json()
         return data["versions"]["values"]
 
@@ -77,7 +100,11 @@ class Credentials(object):
         :rtype: string
         """
         base_url = utils.get_base_url(self._conf.get("identity", "uri"))
-        versions = self._list_versions(base_url)
+        kwargs = {
+            'verify': self.verify,
+            'cert': self.cert,
+        }
+        versions = self._list_versions(base_url, **kwargs)
         for version in versions:
             if version["status"] == "stable" and "v3" in version["id"]:
                 return "v3"

@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    discover-tempest-config can now automatically set the following 2 tempest
+    options:
+    * CONF.identity.disable_ssl_certificate_validation
+    * CONF.identity.ca_certificates_file
+    The mentioned options are set based on cloud's request verify arguments
+    (verify and cert) read (either set as environent variables or passed via
+    CLI) by openstack package.
+fixes:
+  - |
+    Passing a value from --insecure argument is fixed. Previously --insecure
+    didn't have any effect on discover-tempest-config and its behavior which
+    lead to failing requests due to certificates verify failures. That is fixed
+    now. Now the --insecure's value will be stored in the internal Credentials
+    class and safely pased in requests querying the cloud.

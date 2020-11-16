@@ -42,7 +42,7 @@ class TestProjectsClient(BaseConfigTempestTest):
             self.client_manager.identity_region,
             'publicURL',
             identity_version,
-            **self.client_manager._get_default_params(self.conf))
+            **self.creds.get_ssl_certificate_validation())
 
     def test_init(self):
         resp = self._get_projects_client('v2')
@@ -130,7 +130,7 @@ class TestClientManager(BaseConfigTempestTest):
             self.creds.identity_version,
             self.conf.get_defaulted('identity', 'catalog_type'),
             'publicURL',
-            self.client_manager._get_default_params(self.conf))
+            self.creds.get_ssl_certificate_validation())
         self.assertEqual(
             type(self.client_manager.users).__name__,
             'UsersClient')
@@ -142,7 +142,7 @@ class TestClientManager(BaseConfigTempestTest):
             self.creds.identity_version,
             self.conf.get_defaulted('identity', 'catalog_type'),
             'publicURL',
-            self.client_manager._get_default_params(self.conf))
+            self.creds.get_ssl_certificate_validation())
         self.assertEqual(
             type(self.client_manager.roles).__name__,
             'RolesClient')
