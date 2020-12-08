@@ -9,7 +9,8 @@
       jobs:
         - python-tempestconf-tempest-devstack-admin
         - python-tempestconf-tempest-devstack-admin-train
-        - python-tempestconf-tempest-devstack-admin-stein
+        - python-tempestconf-tempest-devstack-admin-ussuri
+        - python-tempestconf-tempest-devstack-admin-victoria
         - python-tempestconf-tempest-devstack-demo
         - python-tempestconf-tempest-packstack-admin:
             voting: false
@@ -48,7 +49,8 @@
       jobs:
         - python-tempestconf-tempest-devstack-admin
         - python-tempestconf-tempest-devstack-admin-train
-        - python-tempestconf-tempest-devstack-admin-stein
+        - python-tempestconf-tempest-devstack-admin-ussuri
+        - python-tempestconf-tempest-devstack-admin-victoria
         - python-tempestconf-tempest-devstack-demo
         - python-tempestconf-tempest-devstack-admin-plugins
         - tripleo-ci-centos-8-content-provider:
@@ -72,7 +74,8 @@
     experimental:
       jobs:
         - python-tempestconf-tempest-devstack-demo-train
-        - python-tempestconf-tempest-devstack-demo-stein
+        - python-tempestconf-tempest-devstack-demo-ussuri
+        - python-tempestconf-tempest-devstack-demo-victoria
 
 
 - job:
@@ -191,11 +194,18 @@
       branch: stable/train
 
 - job:
-    name: python-tempestconf-tempest-devstack-admin-stein
+    name: python-tempestconf-tempest-devstack-admin-ussuri
     parent: python-tempestconf-tempest-devstack-admin
-    override-checkout: stable/stein
+    override-checkout: stable/ussuri
     vars:
-      branch: stable/stein
+      branch: stable/ussuri
+
+- job:
+    name: python-tempestconf-tempest-devstack-admin-victoria
+    parent: python-tempestconf-tempest-devstack-admin
+    override-checkout: stable/victoria
+    vars:
+      branch: stable/victoria
 
 - job:
     name: python-tempestconf-tempest-devstack-demo
@@ -224,11 +234,18 @@
       branch: stable/train
 
 - job:
-    name: python-tempestconf-tempest-devstack-demo-stein
+    name: python-tempestconf-tempest-devstack-demo-ussuri
     parent: python-tempestconf-tempest-devstack-demo
-    override-checkout: stable/stein
+    override-checkout: stable/ussuri
     vars:
-      branch: stable/stein
+      branch: stable/ussuri
+
+- job:
+    name: python-tempestconf-tempest-devstack-demo-victoria
+    parent: python-tempestconf-tempest-devstack-demo
+    override-checkout: stable/victoria
+    vars:
+      branch: stable/victoria
 
 - job:
     name: python-tempestconf-tempest-packstack-admin
