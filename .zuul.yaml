@@ -39,7 +39,7 @@
             dependencies:
               - tripleo-ci-centos-8-content-provider
 
-        - refstack-client-devstack-tempestconf
+        - refstack-client-devstack-master
         - tripleo-ci-centos-8-scenario010-standalone:
             irrelevant-files: *irrelevant-files
             vars: *standalone
@@ -65,7 +65,7 @@
             vars: *standalone
             dependencies:
               - tripleo-ci-centos-8-content-provider
-        - refstack-client-devstack-tempestconf
+        - refstack-client-devstack-master
         - tripleo-ci-centos-8-scenario010-standalone:
             irrelevant-files: *irrelevant-files
             vars: *standalone
@@ -76,6 +76,9 @@
         - python-tempestconf-tempest-devstack-demo-train
         - python-tempestconf-tempest-devstack-demo-ussuri
         - python-tempestconf-tempest-devstack-demo-victoria
+        - refstack-client-devstack-train
+        - refstack-client-devstack-ussuri
+        - refstack-client-devstack-victoria
 
 
 - job:
