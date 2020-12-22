@@ -87,8 +87,7 @@ def load_basic_defaults(conf):
             ("project_name", "demo"),
             ("alt_username", "alt_demo_tempestconf"),
             ("alt_password", "secrete"),
-            ("alt_project_name", "alt_demo"),
-            ("disable_ssl_certificate_validation", "true")
+            ("alt_project_name", "alt_demo")
         ],
         "scenario": [
             ("img_dir", "etc")

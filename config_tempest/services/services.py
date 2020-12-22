@@ -109,7 +109,8 @@ class Services(object):
                     service = s_class(s_name, s_type, url, self.token,
                                       self._ssl_validation,
                                       self._clients.get_service_client(
-                                          s_type))
+                                          s_type),
+                                      ca_certs=self._creds.ca_certs)
                     # discover extensions of the service
                     service.set_extensions()
 

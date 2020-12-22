@@ -33,12 +33,13 @@ class ServiceError(Exception):
 
 class Service(object):
     def __init__(self, name, s_type, service_url, token,
-                 disable_ssl_validation, client=None):
+                 disable_ssl_validation, client=None, **kwargs):
         self.name = name
         self.s_type = s_type
         self.service_url = service_url
         self.headers = {'Accept': 'application/json', 'X-Auth-Token': token}
         self.disable_ssl_validation = disable_ssl_validation
+        self.ca_certs = kwargs.get('ca_certs', None)
         self.client = client
 
         self.extensions = []
