@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    discover-tempest-config can now automatically set the following 2 tempest
+    options:
+    * CONF.placement.min_microversion
+    * CONF.placement.max_microversion
+    The mentioned options are set based on the placement service response.

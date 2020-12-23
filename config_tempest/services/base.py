@@ -180,16 +180,16 @@ class VersionedService(Service):
                 versions.append(version)
         return list(map(lambda x: x['id'], versions))
 
-    def filter_api_microversions(self):
+    def filter_api_microversions(self, max_version='version'):
         min_microversion = ''
         max_microversion = ''
         for version in self.versions_body['versions']:
             if version['status'] != "DEPRECATED":
                 if max_microversion == '':
-                    max_microversion = version['version']
+                    max_microversion = version[max_version]
                 else:
                     max_microversion = max(max_microversion,
-                                           version['version'])
+                                           version[max_version])
                 if 'min_version' not in version:
                     continue
                 if min_microversion == '':
