@@ -69,4 +69,4 @@
           vars:
             tox_envlist: "all"
             tempest_test_regex: "{{ test_regex|join('|') }}"
-            tempest_black_regex: "{{ black_regex|join('|') }}"
+            tempest_exclude_regex: "{{ exclude_regex|join('|') }}"
