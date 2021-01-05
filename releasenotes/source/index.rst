@@ -6,6 +6,7 @@
    :maxdepth: 1
 
    unreleased
+   v3.1.0
    v3.0.0
    v2.5.0
    v2.4.0
