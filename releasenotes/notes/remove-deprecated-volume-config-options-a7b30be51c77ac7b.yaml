@@ -1,0 +1,19 @@
+---
+upgrade:
+  - |
+    Starting by Rocky the following options are deprecated by Tempest
+
+    * ``CONF.volume-feature-enabled.api_v2``
+    * ``CONF.volume-feature-enabled.api_v3``
+
+    and have no effect on triggering volume v2/v3 API tests.
+    ``CONF.volume.catalog_type`` is used for that instead.
+
+    The options are deleted from Tempest by
+    https://review.opendev.org/c/openstack/tempest/+/698754
+
+    Tempest sets ``CONF.volume.catalog_type`` to 'volumev3' by default so no
+    action in python-tempestconf is needed considering the current API is v3.
+    In case a user wants to run tempest tests against volume v2 API, it's
+    needed to set catalog_type to 'volumev2' e.g. via overrides using
+    python-tempestconf's CLI or manually in the generated tempest.conf file.
