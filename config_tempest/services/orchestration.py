@@ -53,10 +53,6 @@ class OrchestrationService(Service):
             domain_name = conf.get('auth', 'admin_domain_name')
             conf.set(sec, 'project_domain_name', domain_name)
             conf.set(sec, 'user_domain_name', domain_name)
-
-            # should be set to True if using self-signed SSL certificates which
-            # is a general case
-            conf.set(sec, 'disable_ssl_certificate_validation', 'True')
         except configparser.NoOptionError:
             LOG.warning("Be aware that an option required for "
                         "heat_tempest_plugin cannot be set!")
@@ -102,6 +98,10 @@ class OrchestrationService(Service):
                         username)
 
     def post_configuration(self, conf, is_service):
+        conf.set('heat_plugin', 'disable_ssl_certificate_validation',
+                 str(self.disable_ssl_validation))
+        if self.ca_certs:
+            conf.set('heat_plugin', 'ca_file', self.ca_certs)
         if conf.has_section('compute'):
             compute_options = conf.options('compute')
             if 'flavor_ref' in compute_options:
