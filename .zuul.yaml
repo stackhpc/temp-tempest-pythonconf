@@ -39,7 +39,8 @@
             dependencies:
               - tripleo-ci-centos-8-content-provider
 
-        - refstack-client-devstack-master
+        - refstack-client-devstack-master:
+            irrelevant-files: *irrelevant-files
         - tripleo-ci-centos-8-scenario010-standalone:
             irrelevant-files: *irrelevant-files
             vars: *standalone
@@ -65,7 +66,8 @@
             vars: *standalone
             dependencies:
               - tripleo-ci-centos-8-content-provider
-        - refstack-client-devstack-master
+        - refstack-client-devstack-master:
+            irrelevant-files: *irrelevant-files
         - tripleo-ci-centos-8-scenario010-standalone:
             irrelevant-files: *irrelevant-files
             vars: *standalone
