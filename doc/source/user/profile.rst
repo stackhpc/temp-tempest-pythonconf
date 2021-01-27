@@ -29,7 +29,7 @@ Generating a sample profile.yaml file
 
     $ discover-tempest-config --generate-profile ./etc/profile.yaml
 
-.. code-block:: yaml
+.. code-block::
 
     $ cat ./etc/profile.yaml
     collect_timing: false
@@ -107,7 +107,7 @@ Generating a sample profile.yaml file
 ``python-tempestconf`` accepts both of the following inputs, so you can use
 what suits you better, either strings or lists:
 
-.. code-block:: yaml
+.. code-block::
 
     create: True
     out: ./etc/tempest.conf
@@ -124,7 +124,7 @@ what suits you better, either strings or lists:
       volume-feature-enabled.api_extensions: dvr,mine
 
 
-.. code-block:: yaml
+.. code-block::
 
     create: True
     out: ./etc/tempest.conf

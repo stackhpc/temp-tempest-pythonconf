@@ -27,7 +27,7 @@ step **as a prerequisite**:
   * Source your OpenStack RC file containing the cloud credentials. Let's say
     you have an overcloud_rc file with the following content:
 
-    .. code-block:: shell-session
+    .. code-block::
 
         $ cat overcloud_rc
         unset OS_SERVICE_TOKEN
@@ -61,8 +61,7 @@ Override values can be useful when a user wants to set a key-value pair in
 generated ``tempest.conf`` from one of the two following reasons:
 
   * ``python-tempestconf`` is **not** able to discover it and therefore set the
-    desired
-    key-value pair in ``tempest.conf`` by itself
+    desired key-value pair in ``tempest.conf`` by itself
   * ``python-tempestconf`` is able to discover it, but a user wants to set it
     differently
 
@@ -75,7 +74,6 @@ set that ``tempest.conf`` will be written to ``etc/`` directory and we pass
 some override values.
 
 .. code-block:: shell-session
-    :emphasize-lines: 4-6
 
     $ discover-tempest-config \
         --debug \
@@ -92,7 +90,7 @@ some override values.
 
 The generated ``tempest.conf`` will look like:
 
-.. code-block:: shell-session
+.. code-block::
 
     $ cat etc/tempest.conf
     <omitted some content>
@@ -210,7 +208,6 @@ If you already have the file created, you can run
 :command:`discover-tempest-config` command with ``--test-accounts`` argument:
 
 .. code-block:: shell-session
-    :emphasize-lines: 3
 
     $ discover-tempest-config \
         --out etc/tempest.conf \
@@ -218,7 +215,7 @@ If you already have the file created, you can run
 
 The generated ``tempest.conf`` will look like:
 
-.. code-block:: shell-session
+.. code-block::
 
     $ cat etc/tempest.conf
     <omitted some content>
@@ -237,7 +234,6 @@ If your credentials are **non-admin ones**, which means that you are
 will **not create** any resources.
 
 .. code-block:: shell-session
-    :emphasize-lines: 4
 
     $ discover-tempest-config \
         -v \
@@ -258,7 +254,7 @@ it can be found
 Let's say there is a ``clouds.yaml`` file located in ``/etc/openstack/`` with
 the following content:
 
-.. code-block:: shell-session
+.. code-block::
 
     $ cat /etc/openstack/clouds.yaml
     clouds:
@@ -282,7 +278,6 @@ variable (for example by sourcing any OpenStack RC file).
 file.
 
 .. code-block:: shell-session
-    :emphasize-lines: 3
 
     $ discover-tempest-config \
         --debug \
@@ -291,7 +286,6 @@ file.
 So the call from `non-admin argument`_ section would for example look like:
 
 .. code-block:: shell-session
-    :emphasize-lines: 5
 
     $ discover-tempest-config \
         -v \
@@ -303,7 +297,6 @@ The call from `Usage with tempest accounts file`_ section would for example
 look like:
 
 .. code-block:: shell-session
-    :emphasize-lines: 2
 
     $ discover-tempest-config \
         --os-cloud devstack \
@@ -330,7 +323,7 @@ Users
 +++++
 
 For a successful execution of Tempest at least two users need to be created
-(the default concurrency is 2). Therefor ``python-tempestconf`` looks for
+(the default concurrency is 2). Therefore ``python-tempestconf`` looks for
 the following two users:
 
   * the user who started ``python-tempestconf``
@@ -370,8 +363,8 @@ to glance and used later by tempest tests for booting VMs.
 
 The following example will upload ``/my/path/to/myImage.img`` image to glance
 twice. First **compute.image_ref** will be equal to the ID of the uploaded
-image. Then the image is uploaded to glance again and but
-**compute.image_alt_ref** is set to that corresponding ID:
+image. Then the image is uploaded to glance again but
+**compute.image_alt_ref** is set to the new corresponding ID:
 
 .. code-block:: shell-session
 
@@ -463,7 +456,7 @@ following example:
 
 The generated tempest.conf will look like:
 
-.. code-block:: ini
+.. code-block::
 
     $ cat etc/tempest.conf
     <omitted some content>

@@ -43,8 +43,8 @@ Fixing bugs
 
 1. If you have found a bug and you know how to fix it, please, check our
    `storyboard project <https://storyboard.openstack.org/#!/project/912>`_ for
-   any stories which may relate to the issue. If you haven't find any related
-   story, please, create one. Check `Reporting Bugs`_.
+   any stories which may relate to the issue. If you haven't found any related
+   stories, please, create one. Check `Reporting Bugs`_.
 
 2. Follow `Contributing Code`_ and submit a code review in
    https://review.opendev.org/.

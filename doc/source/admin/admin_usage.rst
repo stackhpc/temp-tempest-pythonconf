@@ -71,7 +71,7 @@ used, `see here`_. The generated accounts file will look similarly to this one:
 
 .. _see here: ../user/usage.html#usage-with-tempest-accounts-file
 
-.. code-block:: ini
+.. code-block::
 
     $ cat ~/accounts.yaml
     # A minimal accounts.yaml file
