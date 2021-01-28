@@ -25,6 +25,7 @@ class LoadBalancerService(VersionedService):
         conf.set('load_balancer', 'enable_security_groups', 'True')
         conf.set('load_balancer', 'admin_role', 'admin')
         conf.set('load_balancer', 'RBAC_test_type', 'owner_or_admin')
+        conf.set('network-feature-enabled', 'port_security', 'True')
 
     @staticmethod
     def get_service_type():
