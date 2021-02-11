@@ -13,14 +13,18 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from functools import wraps
 import os
 import shutil
 import subprocess
 import time
 
+from functools import wraps
+
 from six.moves import urllib
 from tempest.lib import exceptions
+from tenacity import RetryError
+from tenacity import Retrying
+from tenacity import stop_after_attempt
 
 from config_tempest import constants as C
 from config_tempest.services.base import VersionedService
@@ -78,7 +82,7 @@ class ImageService(VersionedService):
     def set_versions(self):
         super(ImageService, self).set_versions(top_level=False)
 
-    def create_tempest_images(self, conf):
+    def create_tempest_images(self, conf, retry_alt=False):
         """Uploads an image to the glance.
 
         The method creates images specified in conf, if they're not created
@@ -113,20 +117,22 @@ class ImageService(VersionedService):
             image_id = conf.get('compute', 'image_ref')
         image_id = self.find_or_upload_image(image_id, name,
                                              image_source=image_path,
-                                             image_dest=img_path)
+                                             image_dest=img_path,
+                                             retry_alt=retry_alt)
         alt_image_id = None
         if conf.has_option('compute', 'image_ref_alt'):
             alt_image_id = conf.get('compute', 'image_ref_alt')
         alt_image_id = self.find_or_upload_image(alt_image_id, alt_name,
                                                  image_source=image_path,
-                                                 image_dest=img_path)
+                                                 image_dest=img_path,
+                                                 retry_alt=retry_alt)
         # get name of the image_id
         conf.set('scenario', 'img_file', img_path)
         conf.set('compute', 'image_ref', image_id)
         conf.set('compute', 'image_ref_alt', alt_image_id)
 
     def find_or_upload_image(self, image_id, image_name, image_source='',
-                             image_dest=''):
+                             image_dest='', retry_alt=False):
         """If the image is not found, uploads it.
 
         :type image_id: string
@@ -145,11 +151,17 @@ class ImageService(VersionedService):
             C.LOG.info("Creating image '%s'", image_name)
             if image_source.startswith("http:") or \
                image_source.startswith("https:"):
-                self._download_file(image_source, image_dest)
+                try:
+                    self._download_file(image_source, image_dest)
+                    # We only download alternative image if the default image
+                    # fails
+                except Exception:
+                    if retry_alt:
+                        self._download_with_retry(image_dest)
             else:
                 try:
                     shutil.copyfile(image_source, image_dest)
-                except IOError:
+                except Exception:
                     # let's try if this is the case when a user uses already
                     # existing image in glance which is not uploaded as *_alt
                     if image_name[-4:] == "_alt":
@@ -159,9 +171,24 @@ class ImageService(VersionedService):
                             if not os.path.isfile(path):
                                 self._download_image(image['id'], path)
                     else:
-                        raise IOError
+                        if retry_alt:
+                            self._download_with_retry(image_dest)
+                        else:
+                            raise IOError
             image = self._upload_image(image_name, image_dest)
         return image['id']
+
+    def _download_with_retry(self, destination):
+        retry_attempt = -1
+        attempts = len(C.DEFAULT_IMAGES)
+        try:
+            for attempt in Retrying(stop=stop_after_attempt(attempts)):
+                retry_attempt += 1
+                with attempt:
+                    self._download_file(C.DEFAULT_IMAGES[retry_attempt],
+                                        destination)
+        except RetryError:
+            pass
 
     def _find_image(self, image_id, image_name):
         """Find image by ID or name (the image client doesn't have this).
