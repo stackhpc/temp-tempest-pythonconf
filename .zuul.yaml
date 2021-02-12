@@ -219,7 +219,7 @@
       Tempest job for python-tempestconf on a devstack environment as the demo user.
     run: playbooks/python-tempestconf-tempest-devstack.yaml
     vars:
-      aditional_tempestconf_params: "auth.tempest_roles member"
+      additional_tempestconf_params: "auth.tempest_roles member"
       user: demo
       cloud_user: devstack
       test_demo: true

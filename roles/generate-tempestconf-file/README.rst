@@ -61,7 +61,7 @@ is then copied to tempest directory.
    playbook where the role is called.
 
 
-.. zuul:rolevar:: aditional_tempestconf_params
+.. zuul:rolevar:: additional_tempestconf_params
    :type: string
    :default: ""
 
