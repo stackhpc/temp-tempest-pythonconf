@@ -16,16 +16,12 @@ Here is the list of tempest options, which are set by default:
     log_file = tempest.log
 
     [identity]
-    username = demo
+    username = demo_tempestconf
     password = secrete
     project_name = demo
-    alt_username = alt_demo
+    alt_username = alt_demo_tempestconf
     alt_password = secrete
     alt_project_name = alt_demo
-    disable_ssl_certificate_validation = true
-
-    [scenario]
-    img_dir = etc
 
     [auth]
     ; if _member_ role is not present in the system, python-tempestconf

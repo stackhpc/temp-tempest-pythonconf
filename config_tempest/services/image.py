@@ -86,7 +86,16 @@ class ImageService(VersionedService):
 
         :type conf: TempestConf object
         """
-        img_dir = os.path.join(conf.get("scenario", "img_dir"))
+        # the absolute path is necessary for supporting older tempest versions,
+        # which had CONF.scenario.img_dir option, see this line of code:
+        # https://github.com/openstack/tempest/blob/a0ee8b4ccfc512a09
+        # e1ddb135950b767110aae9b/tempest/scenario/manager.py#L534
+        # If the path is not an absolute one, the concatenation of strings ^^
+        # will result in an invalid path
+        # Moreover the absolute path is needed so that users can move the
+        # generated tempest.conf outside of python-tempestconf destination,
+        # otherwise tempest would fail accessing the CONF.scenario.img_file
+        img_dir = os.path.abspath(os.path.join(C.DEFAULT_IMAGE_DIR))
         image_path = conf.get_defaulted('image', 'image_path')
         img_path = os.path.join(img_dir,
                                 os.path.basename(image_path))
@@ -112,8 +121,7 @@ class ImageService(VersionedService):
                                                  image_source=image_path,
                                                  image_dest=img_path)
         # get name of the image_id
-        image_id_name = self._find_image(image_id, '')['name']
-        conf.set('scenario', 'img_file', image_id_name)
+        conf.set('scenario', 'img_file', img_path)
         conf.set('compute', 'image_ref', image_id)
         conf.set('compute', 'image_ref_alt', alt_image_id)
 

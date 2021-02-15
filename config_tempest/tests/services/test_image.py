@@ -17,6 +17,7 @@ from unittest import mock
 
 from fixtures import MonkeyPatch
 
+from config_tempest import constants as C
 from config_tempest.services.image import ImageService
 from config_tempest.tempest_conf import TempestConf
 from config_tempest.tests.base import BaseServiceTest
@@ -43,9 +44,8 @@ class TestImageService(BaseServiceTest):
         self.Service.convert = False
         self.Service.client = self.FakeServiceClient()
 
-        self.dir = "/img/"
+        C.DEFAULT_IMAGE_DIR = "/img/"
         self.conf = TempestConf()
-        self.conf.set("scenario", "img_dir", self.dir)
         self.conf.set("image", "image_path", "my_image.qcow2")
         self.conf.set("image", "http_image", "http_image.qcow2")
 
@@ -62,7 +62,7 @@ class TestImageService(BaseServiceTest):
         self.assertEqual(self.conf.get('compute', 'image_ref'), 'id_c')
         self.assertEqual(self.conf.get('compute', 'image_ref_alt'), 'id_d')
         self.assertEqual(self.conf.get('scenario', 'img_file'),
-                         'my_image.qcow2')
+                         '/img/my_image.qcow2')
 
     @mock.patch('config_tempest.services.image.ImageService._find_image')
     @mock.patch('config_tempest.services.image.ImageService._download_file')

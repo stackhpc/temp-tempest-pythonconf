@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    python-tempestconf follows tempest's deprecation of
+    ``CONF.scenario.img_dir`` option and removes that option from the
+    automatic tempest.conf generation.
+    python-tempestconf will set an absolute path to the image in
+    ``CONF.scenario.img_file`` option from now on.
