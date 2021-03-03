@@ -13,17 +13,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import json
-
 from config_tempest.services.base import VersionedService
 
 
 class PlacementService(VersionedService):
     def set_versions(self):
-        url, top_level = self.no_port_cut_url()
-        body = self.do_get(url, top_level=top_level,
-                           top_level_path='placement')
-        self.versions_body = json.loads(body)
+        super(PlacementService, self).set_versions(top_level=False)
 
     def set_default_tempest_options(self, conf):
         # set microversions
