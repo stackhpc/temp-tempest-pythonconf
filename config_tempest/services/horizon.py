@@ -21,7 +21,7 @@ from six.moves import urllib
 from config_tempest import constants as C
 
 
-def configure_horizon(conf):
+def configure_horizon(conf, **kwargs):
     """Derive the horizon URIs from the identity's URI."""
     uri = conf.get('identity', 'uri')
     u = urllib.parse.urlparse(uri)
@@ -41,3 +41,5 @@ def configure_horizon(conf):
     if has_horizon:
         conf.set('dashboard', 'dashboard_url', base + '/')
         conf.set('dashboard', 'login_url', base + '/auth/login/')
+        ssl = kwargs.get('disable_ssl_certificate_validation', False)
+        conf.set('dashboard', 'disable_ssl_certificate_validation', str(ssl))

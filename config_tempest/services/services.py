@@ -243,7 +243,10 @@ class Services(object):
         for s in self._services:
             s.post_configuration(self._conf, self.is_service)
 
-        horizon.configure_horizon(self._conf)
+        horizon_kwargs = {
+            "disable_ssl_certificate_validation": self._ssl_validation
+        }
+        horizon.configure_horizon(self._conf, **horizon_kwargs)
 
     def set_supported_api_versions(self):
         # set supported API versions for services with more of them

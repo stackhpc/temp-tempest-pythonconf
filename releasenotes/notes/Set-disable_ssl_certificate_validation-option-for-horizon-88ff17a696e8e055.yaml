@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    discover-tempest-config can now automatically set
+    ``CONF.dashboard.disable_ssl_certificate_validation`` option
+    for horizon service.
