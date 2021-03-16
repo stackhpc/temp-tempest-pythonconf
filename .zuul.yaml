@@ -137,7 +137,7 @@
 
 - job:
     name: python-tempestconf-packstack-base
-    parent: packstack-centos8
+    parent: packstack-centos8s
     description: Base job for python-tempestconf on packstack environment
     required-projects:
       - x/packstack
