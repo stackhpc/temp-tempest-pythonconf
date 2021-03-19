@@ -44,12 +44,12 @@ class ShareService(VersionedService):
                           "pools - storage back-ends can't be discovered.")
             return
         if pools:
-            backends = []
-            enable_protocols = []
+            backends = set()
+            enable_protocols = set()
             for pool in pools:
-                backends.append(pool['backend'])
+                backends.add(pool['backend'])
                 protocol = pool['capabilities']['storage_protocol'].lower()
-                enable_protocols.extend(protocol.split('_'))
+                enable_protocols.update(protocol.split('_'))
 
             conf.set('share', 'backend_names', ','.join(backends))
             conf.set('share', 'enable_protocols', ','.join(enable_protocols))
