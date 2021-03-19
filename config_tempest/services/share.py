@@ -23,6 +23,12 @@ from tempest.lib import exceptions
 
 class ShareService(VersionedService):
 
+    def set_versions(self):
+        url, top_level = self.no_port_cut_url()
+        body = self.do_get(url, top_level=top_level)
+        self.versions_body = json.loads(body)
+        self.versions = self.deserialize_versions(self.versions_body)
+
     def get_share_pools(self, detail=False):
         url = self.service_url + '/scheduler-stats/pools'
         if detail:
