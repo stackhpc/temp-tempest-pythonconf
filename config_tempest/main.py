@@ -295,6 +295,10 @@ def get_arg_parser():
                                 glance if it's not already there. The name of
                                 the image is the leaf name of the path. Default
                                 is '%s'""" % C.DEFAULT_IMAGE)
+    parser.add_argument('--retry-image', default=False, action='store_true',
+                        help="""Allow tempestconf to retry download an image,
+                                in case of failure, from these urls: '%s'
+                                """ % C.DEFAULT_IMAGES)
     parser.add_argument('--flavor-min-mem', default=C.DEFAULT_FLAVOR_RAM,
                         type=int, help="""Specify minimum memory for new
                         flavours, default is '%s'.""" % C.DEFAULT_FLAVOR_RAM)
@@ -539,7 +543,8 @@ def config_tempest(**kwargs):
                                     no_rng=kwargs.get('no_rng', False),
                                     convert=kwargs.get('convert_to_raw',
                                                        False))
-        image.create_tempest_images(conf)
+        retry_alt = kwargs.get('retry_image', False)
+        image.create_tempest_images(conf, retry_alt=retry_alt)
 
     if services.is_service(**{"type": "network"}):
         network = services.get_service("network")
@@ -599,7 +604,8 @@ def main():
         overrides=args.overrides,
         remove=args.remove,
         test_accounts=args.test_accounts,
-        verbose=args.verbose
+        verbose=args.verbose,
+        retry_image=args.retry_image
     )
 
 
