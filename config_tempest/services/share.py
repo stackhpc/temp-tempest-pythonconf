@@ -46,13 +46,21 @@ class ShareService(VersionedService):
         if pools:
             backends = set()
             enable_protocols = set()
+            dhss = set()
             for pool in pools:
                 backends.add(pool['backend'])
                 protocol = pool['capabilities']['storage_protocol'].lower()
                 enable_protocols.update(protocol.split('_'))
+                dhss.add(pool['capabilities']['driver_handles_share_servers'])
 
             conf.set('share', 'backend_names', ','.join(backends))
             conf.set('share', 'enable_protocols', ','.join(enable_protocols))
+
+            # NOTE(gouthamr): manila tests can be run with
+            # driver_handles_share_servers set to either True or False,
+            # not both at the same time. Lets err on the side of caution and
+            # set this to True if any DHSS=True backend is present.
+            conf.set('share', 'multitenancy_enabled', str(any(dhss)))
             if len(backends) > 1:
                 conf.set('share', 'multi_backend', 'True')
 
