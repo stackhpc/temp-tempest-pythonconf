@@ -172,7 +172,7 @@
         - 'heat_tempest_plugin'
         - 'designate_tempest_plugin'
         - 'barbican_tempest_plugin'
-      black_regex:
+      exclude_regex:
         - 'heat_tempest_plugin.tests.functional.test_nova_server_networks.CreateServerTest.test_create_update_server_with_subnet'
         - 'heat_tempest_plugin.tests.scenario.test_volumes.VolumeBackupRestoreIntegrationTest.test_cinder_volume_create_backup_restore'
         - 'heat_tempest_plugin.tests.scenario.test_server_software_config.SoftwareConfigIntegrationTest.test_server_software_config'
@@ -238,7 +238,7 @@
       tempest_concurrency: 1
       # skip until https://storyboard.openstack.org/#!/story/2004209
       # is resolved
-      tempest_black_regex: 'tempest.api.compute.servers'
+      tempest_exclude_regex: 'tempest.api.compute.servers'
 
 - job:
     name: python-tempestconf-tempest-devstack-demo-train
