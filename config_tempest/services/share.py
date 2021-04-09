@@ -53,11 +53,18 @@ class ShareService(VersionedService):
             backends = set()
             enable_protocols = set()
             dhss = set()
+            capability_snapshot_support = set()
+            capability_create_share_from_snapshot_support = set()
             for pool in pools:
                 backends.add(pool['backend'])
-                protocol = pool['capabilities']['storage_protocol'].lower()
+                pool_capabilities = pool['capabilities']
+                protocol = pool_capabilities['storage_protocol'].lower()
                 enable_protocols.update(protocol.split('_'))
-                dhss.add(pool['capabilities']['driver_handles_share_servers'])
+                dhss.add(pool_capabilities['driver_handles_share_servers'])
+                capability_snapshot_support.add(
+                    pool_capabilities['snapshot_support'])
+                capability_create_share_from_snapshot_support.add(
+                    pool_capabilities['create_share_from_snapshot_support'])
 
             conf.set('share', 'backend_names', ','.join(backends))
             conf.set('share', 'enable_protocols', ','.join(enable_protocols))
@@ -67,6 +74,15 @@ class ShareService(VersionedService):
             # not both at the same time. Lets err on the side of caution and
             # set this to True if any DHSS=True backend is present.
             conf.set('share', 'multitenancy_enabled', str(any(dhss)))
+
+            # Optional capabilities/features:
+            conf.set('share', 'run_snapshot_tests',
+                     str(any(capability_snapshot_support)))
+            conf.set('share', 'capability_snapshot_support',
+                     str(any(capability_snapshot_support)))
+            conf.set('share', 'capability_create_share_from_snapshot_support',
+                     str(any(capability_create_share_from_snapshot_support)))
+
             if len(backends) > 1:
                 conf.set('share', 'multi_backend', 'True')
 
