@@ -11,6 +11,7 @@
         - python-tempestconf-tempest-devstack-admin-train
         - python-tempestconf-tempest-devstack-admin-ussuri
         - python-tempestconf-tempest-devstack-admin-victoria
+        - python-tempestconf-tempest-devstack-admin-wallaby
         - python-tempestconf-tempest-devstack-demo
         - python-tempestconf-tempest-packstack-admin:
             voting: false
@@ -52,6 +53,7 @@
         - python-tempestconf-tempest-devstack-admin-train
         - python-tempestconf-tempest-devstack-admin-ussuri
         - python-tempestconf-tempest-devstack-admin-victoria
+        - python-tempestconf-tempest-devstack-admin-wallaby
         - python-tempestconf-tempest-devstack-demo
         - python-tempestconf-tempest-devstack-admin-plugins
         - tripleo-ci-centos-8-content-provider:
@@ -78,9 +80,11 @@
         - python-tempestconf-tempest-devstack-demo-train
         - python-tempestconf-tempest-devstack-demo-ussuri
         - python-tempestconf-tempest-devstack-demo-victoria
+        - python-tempestconf-tempest-devstack-demo-wallaby
         - refstack-client-devstack-train
         - refstack-client-devstack-ussuri
         - refstack-client-devstack-victoria
+        - refstack-client-devstack-wallaby
 
 
 - job:
@@ -222,6 +226,13 @@
       branch: stable/victoria
 
 - job:
+    name: python-tempestconf-tempest-devstack-admin-wallaby
+    parent: python-tempestconf-tempest-devstack-admin
+    override-checkout: stable/wallaby
+    vars:
+      branch: stable/wallaby
+
+- job:
     name: python-tempestconf-tempest-devstack-demo
     parent: python-tempestconf-devstack-base
     description: |
@@ -260,6 +271,13 @@
     override-checkout: stable/victoria
     vars:
       branch: stable/victoria
+
+- job:
+    name: python-tempestconf-tempest-devstack-demo-wallaby
+    parent: python-tempestconf-tempest-devstack-demo
+    override-checkout: stable/wallaby
+    vars:
+      branch: stable/wallaby
 
 - job:
     name: python-tempestconf-tempest-packstack-admin
