@@ -22,11 +22,14 @@ from config_tempest import constants as C
 
 
 def configure_horizon(conf, **kwargs):
-    """Derive the horizon URIs from the identity's URI."""
-    uri = conf.get('identity', 'uri')
-    u = urllib.parse.urlparse(uri)
-    base = '%s://%s%s' % (u.scheme, u.netloc.replace(
-        ':' + str(u.port), ''), '/dashboard')
+    """Verify horizon is working (fallback to introspect from identity URI)"""
+    if conf.has_option("dashboard", "dashboard_url"):
+        base = conf.get("dashboard", "dashboard_url")
+    else:
+        uri = conf.get('identity', 'uri')
+        u = urllib.parse.urlparse(uri)
+        base = '%s://%s%s' % (u.scheme, u.netloc.replace(
+            ':' + str(u.port), ''), '/dashboard')
     assert base.startswith('http:') or base.startswith('https:')
     has_horizon = True
     try:

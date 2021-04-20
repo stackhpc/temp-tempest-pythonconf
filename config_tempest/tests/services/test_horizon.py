@@ -28,6 +28,18 @@ class TestConfigTempest(BaseConfigTempestTest):
         super(TestConfigTempest, self).setUp()
         self.conf = self._get_conf("v2.0", "v3")
 
+    def test_configure_horizon_overridden(self):
+        mock_function = mock.Mock(return_value=True)
+        self.useFixture(MonkeyPatch('six.moves.urllib.request.urlopen',
+                                    mock_function))
+        self.conf.set("dashboard", "dashboard_url", "http://172.16.52.151")
+        horizon.configure_horizon(self.conf)
+        self.assertEqual(self.conf.get('service_available', 'horizon'), "True")
+        self.assertEqual(self.conf.get('dashboard', 'dashboard_url'),
+                         "http://172.16.52.151/")
+        self.assertEqual(self.conf.get('dashboard', 'login_url'),
+                         "http://172.16.52.151/auth/login/")
+
     def test_configure_horizon_ipv4(self):
         mock_function = mock.Mock(return_value=True)
         self.useFixture(MonkeyPatch('six.moves.urllib.request.urlopen',
