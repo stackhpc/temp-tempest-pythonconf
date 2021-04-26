@@ -22,15 +22,24 @@ from functools import wraps
 
 from six.moves import urllib
 from tempest.lib import exceptions
-from tenacity import RetryError
-from tenacity import Retrying
+from tenacity import retry
 from tenacity import stop_after_attempt
 
 from config_tempest import constants as C
 from config_tempest.services.base import VersionedService
 
 
+stop = stop_after_attempt(len(C.DEFAULT_IMAGES))
+
+
 class ImageService(VersionedService):
+
+    def __init__(self, name, s_type, service_url, token,
+                 disable_ssl_validation, client=None, **kwargs):
+        super(ImageService, self).__init__(
+            name, s_type, service_url, token, disable_ssl_validation,
+            client, **kwargs)
+        self.retry_attempt = -1
 
     def set_image_preferences(self, disk_format, non_admin, no_rng=False,
                               convert=False):
@@ -178,17 +187,10 @@ class ImageService(VersionedService):
             image = self._upload_image(image_name, image_dest)
         return image['id']
 
+    @retry(stop=stop)
     def _download_with_retry(self, destination):
-        retry_attempt = -1
-        attempts = len(C.DEFAULT_IMAGES)
-        try:
-            for attempt in Retrying(stop=stop_after_attempt(attempts)):
-                retry_attempt += 1
-                with attempt:
-                    self._download_file(C.DEFAULT_IMAGES[retry_attempt],
-                                        destination)
-        except RetryError:
-            pass
+        self.retry_attempt += 1
+        self._download_file(C.DEFAULT_IMAGES[self.retry_attempt], destination)
 
     def _find_image(self, image_id, image_name):
         """Find image by ID or name (the image client doesn't have this).
