@@ -46,7 +46,7 @@ class TestIdentityService(BaseServiceTest):
                     'OS-SIMPLE-CERT', 'OS-EP-FILTER']
         self.Service.extensions = exp_resp[:2]
         self.Service.extensions_v3 = exp_resp[2:]
-        self.assertItemsEqual(self.Service.get_extensions(), exp_resp)
+        self.assertCountEqual(self.Service.get_extensions(), exp_resp)
 
     def test_set_identity_v3_extensions(self):
         expected_resp = ['OS-INHERIT', 'OS-OAUTH1',
@@ -58,8 +58,8 @@ class TestIdentityService(BaseServiceTest):
         self.Service.service_url = self.FAKE_URL + "v3"
         fake_resp.raise_for_status = mock.Mock()
         self.Service.set_identity_v3_extensions()
-        self.assertItemsEqual(self.Service.extensions_v3, expected_resp)
-        self.assertItemsEqual(self.Service.get_extensions(), expected_resp)
+        self.assertCountEqual(self.Service.extensions_v3, expected_resp)
+        self.assertCountEqual(self.Service.get_extensions(), expected_resp)
 
     def test_set_get_versions(self):
         exp_resp = ['v3.8']

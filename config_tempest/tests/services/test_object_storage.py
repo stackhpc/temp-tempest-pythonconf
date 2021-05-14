@@ -36,14 +36,14 @@ class TestObjectStorageService(BaseServiceTest):
                          'methods', 'account_quotas']
         self._fake_service_do_get_method(self.FAKE_STORAGE_EXTENSIONS)
         self.Service.set_extensions()
-        self.assertItemsEqual(self.Service.extensions, expected_resp)
-        self.assertItemsEqual(self.Service.get_extensions(), expected_resp)
+        self.assertCountEqual(self.Service.extensions, expected_resp)
+        self.assertCountEqual(self.Service.get_extensions(), expected_resp)
 
     def test_set_get_extensions_empty(self):
         self.Service.service_url = self.FAKE_URL + 'v3'
         self.Service.set_extensions()
-        self.assertItemsEqual(self.Service.extensions, [])
-        self.assertItemsEqual(self.Service.get_extensions(), [])
+        self.assertCountEqual(self.Service.extensions, [])
+        self.assertCountEqual(self.Service.get_extensions(), [])
 
     def test_list_create_roles(self):
         conf = self.Service.conf

@@ -90,8 +90,8 @@ class TestVersionedService(BaseServiceTest):
         self._fake_service_do_get_method(self.FAKE_VERSIONS)
         self.Service.set_versions()
         resp = self.Service.get_versions()
-        self.assertItemsEqual(resp, expected_resp)
-        self.assertItemsEqual(self.Service.versions, expected_resp)
+        self.assertCountEqual(resp, expected_resp)
+        self.assertCountEqual(self.Service.versions, expected_resp)
 
     def test_deserialize_versions(self):
         expected_resp = ['v2.0', 'v2.1']

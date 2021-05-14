@@ -31,7 +31,7 @@ class TestProfile(BaseConfigTempestTest):
             'section.key2=value1,value2'
         ]
         out_data = profile._convert_remove_append(in_data)
-        self.assertItemsEqual(expected, out_data)
+        self.assertCountEqual(expected, out_data)
 
     @mock.patch('config_tempest.profile._read_yaml_file')
     def test_read_profile_file(self, mock_read_yaml):

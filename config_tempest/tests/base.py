@@ -310,10 +310,10 @@ class BaseServiceTest(BaseConfigTempestTest):
         # set the fake extensions
         service.set_extensions()
         # check if extensions were set
-        self.assertItemsEqual(service.extensions, expected_resp)
+        self.assertCountEqual(service.extensions, expected_resp)
         # check if get method returns the right data
         resp = service.get_extensions()
-        self.assertItemsEqual(resp, expected_resp)
+        self.assertCountEqual(resp, expected_resp)
 
     def _set_get_versions(self, service, expected_resp, fake_data):
         # mock do_get response
@@ -321,14 +321,14 @@ class BaseServiceTest(BaseConfigTempestTest):
         # set the fake versions
         service.set_versions()
         # check if versions were set
-        self.assertItemsEqual(service.versions, expected_resp)
+        self.assertCountEqual(service.versions, expected_resp)
         # check if get method returns the right data
         resp = service.get_versions()
-        self.assertItemsEqual(resp, expected_resp)
+        self.assertCountEqual(resp, expected_resp)
 
     def _test_deserialize_versions(self, service, expected_resp, fake_data):
         resp = service.deserialize_versions(fake_data)
-        self.assertItemsEqual(resp, expected_resp)
+        self.assertCountEqual(resp, expected_resp)
 
     def _assert_conf_get_not_raises(self, exc, section, value):
         try:
