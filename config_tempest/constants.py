@@ -24,13 +24,13 @@ TEMPEST_WORKSPACE = os.getcwd()
 DEPLOYER_INPUT = os.path.join(os.path.expanduser("~"),
                               "tempest-deployer-input.conf")
 DEFAULT_IMAGE_DIR = 'etc'
-DEFAULT_IMAGE = ("https://download.cirros-cloud.net/0.4.0/"
-                 "cirros-0.4.0-x86_64-disk.img")
+DEFAULT_IMAGE = ("https://download.cirros-cloud.net/0.5.2/"
+                 "cirros-0.5.2-x86_64-disk.img")
 
-DEFAULT_IMAGES = [("https://download.cirros-cloud.net/0.4.0/"
-                  "cirros-0.4.0-x86_64-disk.img"),
+DEFAULT_IMAGES = [("https://download.cirros-cloud.net/0.5.2/"
+                  "cirros-0.5.2-x86_64-disk.img"),
                   ("http://images.rdoproject.org/cirros/"
-                  "cirros-0.4.0-x86_64-disk.img")]
+                  "cirros-0.5.2-x86_64-disk.img")]
 DEFAULT_IMAGE_FORMAT = 'qcow2'
 
 DEFAULT_FLAVOR_RAM = 128
