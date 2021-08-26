@@ -25,17 +25,30 @@ from config_tempest.services.base import Service
 class ObjectStorageService(Service):
     def set_extensions(self):
         if 'v3' not in self.service_url:  # it's not a v3 url
-            try:
-                body = self.do_get(self.service_url, top_level=True,
-                                   top_level_path="info")
-                body = json.loads(body)
-                # Remove Swift general information from extensions list
-                body.pop('swift')
-                self.extensions = body.keys()
-            except Exception:
-                self.extensions = []
+            capabilities = self.get_capabilities('info')
+            if not capabilities:
+                # Certain deploynments have /info API endpoint for
+                # listing active capabilities at /swift/info instead
+                # (e.g.: when ceph is on swift)
+                capabilities = self.get_capabilities('swift/info')
+
+            capabilities = json.loads(capabilities)
+            # Remove Swift general information from extensions list
+            capabilities.pop('swift', {})
+            self.extensions = capabilities.keys()
         else:
             self.extensions = []
+
+    def get_capabilities(self, path):
+        try:
+            body = self.do_get(self.service_url, top_level=True,
+                               top_level_path=path)
+        except Exception as e:
+            body = '{}'
+            LOG.warning('Object storage %s API endpoint not discovered. '
+                        'Error message: %s', path, e)
+
+        return body
 
     def list_create_roles(self, conf, client):
         try:
