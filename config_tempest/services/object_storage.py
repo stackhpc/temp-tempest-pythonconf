@@ -32,7 +32,6 @@ class ObjectStorageService(Service):
                 # (e.g.: when ceph is on swift)
                 capabilities = self.get_capabilities('swift/info')
 
-            capabilities = json.loads(capabilities)
             # Remove Swift general information from extensions list
             capabilities.pop('swift', {})
             self.extensions = capabilities.keys()
@@ -48,7 +47,7 @@ class ObjectStorageService(Service):
             LOG.warning('Object storage %s API endpoint not discovered. '
                         'Error message: %s', path, e)
 
-        return body
+        return json.loads(body)
 
     def list_create_roles(self, conf, client):
         try:
