@@ -115,4 +115,4 @@
         cat {{ tempestconf_src_relative_path }}/etc/cloud_tempest.conf
 
   vars:
-    tempestconf_src_relative_path: "{{ zuul.projects['opendev.org/osf/python-tempestconf'].src_dir }}"
+    tempestconf_src_relative_path: "{{ zuul.projects['opendev.org/openinfra/python-tempestconf'].src_dir }}"

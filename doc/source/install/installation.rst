@@ -7,7 +7,7 @@ Git
 
 1. Clone and change to the directory::
 
-    $ git clone https://opendev.org/osf/python-tempestconf
+    $ git clone https://opendev.org/openinfra/python-tempestconf
     $ cd python-tempestconf
 
 2. Create a virtual environment using :command:`virtualenv`::

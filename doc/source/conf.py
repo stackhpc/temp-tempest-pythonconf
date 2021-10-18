@@ -28,7 +28,7 @@ extensions = [
 html_theme = 'openstackdocs'
 
 # openstackdocstheme options
-openstackdocs_repo_name = 'osf/python-tempestconf'
+openstackdocs_repo_name = 'openinfra/python-tempestconf'
 openstackdocs_pdf_link = True
 openstackdocs_use_storyboard = True
 

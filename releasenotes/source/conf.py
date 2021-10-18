@@ -43,7 +43,7 @@ extensions = [
 ]
 
 # openstackdocstheme options
-openstackdocs_repo_name = 'osf/python-tempestconf'
+openstackdocs_repo_name = 'openinfra/python-tempestconf'
 openstackdocs_use_storyboard = True
 
 # Add any paths that contain templates here, relative to this directory.
