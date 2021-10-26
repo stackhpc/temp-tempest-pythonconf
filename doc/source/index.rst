@@ -27,7 +27,7 @@ Content:
    user/index
    admin/index
    contributor/index
-
+   releasenotes/index
 
 * :ref:`search`
 

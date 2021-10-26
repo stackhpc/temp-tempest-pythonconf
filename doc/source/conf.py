@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 # -- General configuration ----------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -20,6 +19,7 @@
 extensions = [
     'openstackdocstheme',
     #'sphinx.ext.intersphinx',
+    'reno.sphinxext',
     'sphinx.ext.autodoc',
     'sphinxcontrib.rsvgconverter',
     'sphinxarg.ext'
