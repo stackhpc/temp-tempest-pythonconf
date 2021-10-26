@@ -3,7 +3,6 @@
       - openstack-cover-jobs
       - openstack-python3-yoga-jobs
       - openstack-python37-jobs
-      - publish-openstack-docs-pti
       - release-notes-jobs-python3
     check:
       jobs:
@@ -61,6 +60,7 @@
         #        - standalone
         #    dependencies:
         #      - tripleo-ci-centos-8-content-provider
+        - opendev-tox-docs
     gate:
       jobs:
         - python-tempestconf-tempest-devstack-admin:
@@ -103,6 +103,10 @@
         #    vars: *standalone
         #    dependencies:
         #      - tripleo-ci-centos-8-content-provider
+        - opendev-tox-docs
+    promote:
+      jobs:
+        - opendev-promote-docs
     experimental:
       jobs:
         - python-tempestconf-tempest-devstack-demo-train
