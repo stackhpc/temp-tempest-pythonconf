@@ -6,103 +6,73 @@
       - release-notes-jobs-python3
     check:
       jobs:
-        # TODO(mkopec) temporarily disabled to unblock gates
-        #- python-tempestconf-tempest-devstack-admin
+        - python-tempestconf-tempest-devstack-admin
         - python-tempestconf-tempest-devstack-admin-train
         - python-tempestconf-tempest-devstack-admin-ussuri
         - python-tempestconf-tempest-devstack-admin-victoria
         - python-tempestconf-tempest-devstack-admin-wallaby
         - python-tempestconf-tempest-devstack-admin-xena
+        - python-tempestconf-tempest-devstack-demo
         # TODO(mkopec) temporarily disabled to unblock gates
-        #- python-tempestconf-tempest-devstack-demo
         #- python-tempestconf-tempest-devstack-admin-plugins
-        #- python-tempestconf-tempest-packstack-admin:
-        #    voting: false
-        #- python-tempestconf-tempest-packstack-demo:
-        #    voting: false
-        #- tripleo-ci-centos-8-content-provider:
-        #    irrelevant-files: &irrelevant-files
-        #      - config_tempest/tests/.*$
-        #      - ^doc/.*$
-        #      - ^releasenotes/.*$
-        #      - ^.*\.rst$
-        #- tripleo-ci-centos-8-scenario002-standalone:
-        #    irrelevant-files: *irrelevant-files
-        #    vars: &standalone
-        #      consumer_job: true
-        #      build_container_images: false
-        #      tags:
-        #        - standalone
-        #    dependencies:
-        #      - tripleo-ci-centos-8-content-provider
-
-        #- tripleo-ci-centos-8-standalone:
-        #    irrelevant-files: *irrelevant-files
-        #    vars: *standalone
-        #    dependencies:
-        #      - tripleo-ci-centos-8-content-provider
-
-        - refstack-client-devstack-master:
-            # TODO(mkopec) temporarily put non voting to unblock gates
+        - python-tempestconf-tempest-packstack-admin:
             voting: false
+        - python-tempestconf-tempest-packstack-demo:
+            voting: false
+        - refstack-client-devstack-master:
             irrelevant-files: &irrelevant-files
               - config_tempest/tests/.*$
               - ^doc/.*$
               - ^releasenotes/.*$
               - ^.*\.rst$
-        # TODO(mkopec) temporarily disabled to unblock gates
-        #- tripleo-ci-centos-8-scenario010-standalone:
-        #    irrelevant-files: *irrelevant-files
-        #    vars: &standalone
-        #      consumer_job: true
-        #      build_container_images: false
-        #      tags:
-        #        - standalone
-        #    dependencies:
-        #      - tripleo-ci-centos-8-content-provider
+        - tripleo-ci-centos-8-content-provider:
+            irrelevant-files: *irrelevant-files
+        - tripleo-ci-centos-8-scenario002-standalone:
+            irrelevant-files: *irrelevant-files
+            vars: &standalone
+              consumer_job: true
+              build_container_images: false
+              tags:
+                - standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
+        - tripleo-ci-centos-8-standalone:
+            irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
+        - tripleo-ci-centos-8-scenario010-standalone:
+            irrelevant-files: *irrelevant-files
+            voting: false
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
         - opendev-tox-docs
     gate:
       jobs:
-        - python-tempestconf-tempest-devstack-admin:
-            # TODO(mkopec) temporarily put non voting to unblock gates
-            voting: false
+        - python-tempestconf-tempest-devstack-admin
         - python-tempestconf-tempest-devstack-admin-train
         - python-tempestconf-tempest-devstack-admin-ussuri
         - python-tempestconf-tempest-devstack-admin-victoria
         - python-tempestconf-tempest-devstack-admin-wallaby
         - python-tempestconf-tempest-devstack-admin-xena
-        - python-tempestconf-tempest-devstack-demo:
-            # TODO(mkopec) temporarily put non voting to unblock gates
-            voting: false
-        - python-tempestconf-tempest-devstack-admin-plugins:
-            # TODO(mkopec) temporarily put non voting to unblock gates
-            voting: false
+        - python-tempestconf-tempest-devstack-demo
         # TODO(mkopec) temporarily disabled to unblock gates
-        #- tripleo-ci-centos-8-content-provider:
-        #    irrelevant-files: *irrelevant-files
-        #- tripleo-ci-centos-8-scenario002-standalone:
-        #    irrelevant-files: *irrelevant-files
-        #    vars: *standalone
-        #    # TODO(mkopec) temporarily put non voting to unblock gates
-        #    voting: false
-        #    dependencies:
-        #      - tripleo-ci-centos-8-content-provider
-        #- tripleo-ci-centos-8-standalone:
-        #    irrelevant-files: *irrelevant-files
-        #    vars: *standalone
-        #    # TODO(mkopec) temporarily put non voting to unblock gates
-        #    voting: false
-        #    dependencies:
-        #      - tripleo-ci-centos-8-content-provider
+        #- python-tempestconf-tempest-devstack-admin-plugins
         - refstack-client-devstack-master:
             irrelevant-files: *irrelevant-files
-            # TODO(mkopec) temporarily put non voting to unblock gates
-            voting: false
-        #- tripleo-ci-centos-8-scenario010-standalone:
-        #    irrelevant-files: *irrelevant-files
-        #    vars: *standalone
-        #    dependencies:
-        #      - tripleo-ci-centos-8-content-provider
+        - tripleo-ci-centos-8-content-provider:
+            irrelevant-files: *irrelevant-files
+        - tripleo-ci-centos-8-scenario002-standalone:
+            irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
+        - tripleo-ci-centos-8-standalone:
+            irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-8-content-provider
         - opendev-tox-docs
     promote:
       jobs:
