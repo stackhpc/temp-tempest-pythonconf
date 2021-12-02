@@ -56,6 +56,9 @@ class ImageService(VersionedService):
         self.convert = convert
 
     def set_default_tempest_options(self, conf):
+        # set 'image-feature-enabled' only if multiple stores available
+        if self._is_multistore_enabled():
+            conf.set('image-feature-enabled', 'import_image', 'True')
         # When cirros is the image, set validation.image_ssh_user to cirros.
         # The option is heavily used in CI and it's also usefull for refstack,
         # because we don't have to specify overrides.
@@ -76,6 +79,16 @@ class ImageService(VersionedService):
             # this value can't be set to image.http_image, therefor set the
             # default value
             conf.set('image', 'http_image', C.DEFAULT_IMAGE)
+
+    def _is_multistore_enabled(self):
+        try:
+            self.client.info_stores()['stores']
+        except Exception:
+            C.LOG.info('Can not retrieve stores, either multiple stores are '
+                       'not configured or user are not allowed access '
+                       'to the stores information')
+            return False
+        return True
 
     def get_supported_versions(self):
         return ['v1', 'v2']
