@@ -104,7 +104,6 @@ def load_basic_defaults(conf):
         "compute-feature-enabled": [
             # Default deployment does not use shared storage
             ("live_migration", "false"),
-            ("live_migrate_paused_instances", "true"),
             ("preserve_ports", "true")
         ],
         "network-feature-enabled": [
