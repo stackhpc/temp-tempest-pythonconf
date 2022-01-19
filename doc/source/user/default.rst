@@ -41,7 +41,6 @@ Here is the list of tempest options, which are set by default:
     [compute-feature-enabled]
     # Default deployment does not use shared storage
     live_migration = false
-    live_migrate_paused_instances = true
     preserve_ports = true
 
     [network-feature-enabled]
