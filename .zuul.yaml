@@ -44,7 +44,12 @@
         - tripleo-ci-centos-8-scenario010-standalone:
             irrelevant-files: *irrelevant-files
             voting: false
-            vars: *standalone
+            vars:
+              consumer_job: true
+              build_container_images: false
+              tags:
+                - standalone
+                - octavia
             dependencies:
               - tripleo-ci-centos-8-content-provider
         - opendev-tox-docs
