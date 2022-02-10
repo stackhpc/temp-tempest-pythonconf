@@ -51,7 +51,17 @@
     - name: Run Tempest Tests
       include_role:
         name: run-tempest
-      when: plugins_paths is not defined
+      when:
+        - plugins_paths is not defined
+        - branch is not defined or (branch is defined and branch not in ["stable/train"])
+
+    - name: Run Tempest Tests Tempest version <= 26.0.0
+      include_role:
+        name: run-tempest-26
+      when:
+        - plugins_paths is not defined
+        - branch is defined
+        - branch in ["stable/train"]
 
     - when: plugins_paths is defined
       block:
