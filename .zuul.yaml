@@ -25,9 +25,9 @@
               - ^doc/.*$
               - ^releasenotes/.*$
               - ^.*\.rst$
-        - tripleo-ci-centos-8-content-provider:
+        - tripleo-ci-centos-9-content-provider:
             irrelevant-files: *irrelevant-files
-        - tripleo-ci-centos-8-scenario002-standalone:
+        - tripleo-ci-centos-9-scenario002-standalone:
             irrelevant-files: *irrelevant-files
             vars: &standalone
               consumer_job: true
@@ -35,13 +35,13 @@
               tags:
                 - standalone
             dependencies:
-              - tripleo-ci-centos-8-content-provider
-        - tripleo-ci-centos-8-standalone:
+              - tripleo-ci-centos-9-content-provider
+        - tripleo-ci-centos-9-standalone:
             irrelevant-files: *irrelevant-files
             vars: *standalone
             dependencies:
-              - tripleo-ci-centos-8-content-provider
-        - tripleo-ci-centos-8-scenario010-standalone:
+              - tripleo-ci-centos-9-content-provider
+        - tripleo-ci-centos-9-scenario010-standalone:
             irrelevant-files: *irrelevant-files
             voting: false
             vars:
@@ -51,7 +51,7 @@
                 - standalone
                 - octavia
             dependencies:
-              - tripleo-ci-centos-8-content-provider
+              - tripleo-ci-centos-9-content-provider
         - opendev-tox-docs
     gate:
       jobs:
@@ -66,18 +66,18 @@
         #- python-tempestconf-tempest-devstack-admin-plugins
         - refstack-client-devstack-master:
             irrelevant-files: *irrelevant-files
-        - tripleo-ci-centos-8-content-provider:
+        - tripleo-ci-centos-9-content-provider:
             irrelevant-files: *irrelevant-files
-        - tripleo-ci-centos-8-scenario002-standalone:
-            irrelevant-files: *irrelevant-files
-            vars: *standalone
-            dependencies:
-              - tripleo-ci-centos-8-content-provider
-        - tripleo-ci-centos-8-standalone:
+        - tripleo-ci-centos-9-scenario002-standalone:
             irrelevant-files: *irrelevant-files
             vars: *standalone
             dependencies:
-              - tripleo-ci-centos-8-content-provider
+              - tripleo-ci-centos-9-content-provider
+        - tripleo-ci-centos-9-standalone:
+            irrelevant-files: *irrelevant-files
+            vars: *standalone
+            dependencies:
+              - tripleo-ci-centos-9-content-provider
         - opendev-tox-docs
     promote:
       jobs:
