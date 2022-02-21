@@ -117,6 +117,11 @@ class OrchestrationService(Service):
                 conf.set('heat_plugin', 'image_ref',
                          conf.get('compute', 'image_ref_alt'))
         if conf.has_section('network'):
-            network = conf.get('network', 'floating_network_name')
-            conf.set('heat_plugin', 'network_for_ssh', network)
-            conf.set('heat_plugin', 'floating_network_name', network)
+            try:
+                network = conf.get('network', 'floating_network_name')
+                conf.set('heat_plugin', 'network_for_ssh', network)
+                conf.set('heat_plugin', 'floating_network_name', network)
+            except configparser.NoOptionError:
+                LOG.info("heat_plugin.network_for_ssh and heat_plugin."
+                         "floating_network_name are not set because there "
+                         "is no floating network")
