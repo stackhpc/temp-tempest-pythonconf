@@ -99,7 +99,7 @@ class ObjectStorageService(Service):
                     'discoverability')):
                 return False
             return True
-        except configparser.NoSectionError:
+        except (configparser.NoSectionError, configparser.NoOptionError):
             # On swift, healthcheck is under http://.../healthcheck, while in
             # ceph is under http://.../swift/healthcheck, we check both cases
             return_value = self._check_health_check('healthcheck')
