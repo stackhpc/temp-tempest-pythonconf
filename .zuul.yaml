@@ -1,8 +1,9 @@
 - project:
     templates:
       - openstack-cover-jobs
-      - openstack-python3-yoga-jobs
+      - openstack-python36-jobs
       - openstack-python37-jobs
+      - openstack-python3-zed-jobs
       - release-notes-jobs-python3
     check:
       jobs:
@@ -12,6 +13,7 @@
         - python-tempestconf-tempest-devstack-admin-victoria
         - python-tempestconf-tempest-devstack-admin-wallaby
         - python-tempestconf-tempest-devstack-admin-xena
+        - python-tempestconf-tempest-devstack-admin-yoga
         - python-tempestconf-tempest-devstack-demo
         # TODO(mkopec) temporarily disabled to unblock gates
         #- python-tempestconf-tempest-devstack-admin-plugins
@@ -61,6 +63,7 @@
         - python-tempestconf-tempest-devstack-admin-victoria
         - python-tempestconf-tempest-devstack-admin-wallaby
         - python-tempestconf-tempest-devstack-admin-xena
+        - python-tempestconf-tempest-devstack-admin-yoga
         - python-tempestconf-tempest-devstack-demo
         # TODO(mkopec) temporarily disabled to unblock gates
         #- python-tempestconf-tempest-devstack-admin-plugins
@@ -89,11 +92,13 @@
         - python-tempestconf-tempest-devstack-demo-victoria
         - python-tempestconf-tempest-devstack-demo-wallaby
         - python-tempestconf-tempest-devstack-demo-xena
+        - python-tempestconf-tempest-devstack-demo-yoga
         - refstack-client-devstack-train
         - refstack-client-devstack-ussuri
         - refstack-client-devstack-victoria
         - refstack-client-devstack-wallaby
         - refstack-client-devstack-xena
+        - refstack-client-devstack-yoga
 
 
 - job:
@@ -251,6 +256,13 @@
       branch: stable/xena
 
 - job:
+    name: python-tempestconf-tempest-devstack-admin-yoga
+    parent: python-tempestconf-tempest-devstack-admin
+    override-checkout: stable/yoga
+    vars:
+      branch: stable/yoga
+
+- job:
     name: python-tempestconf-tempest-devstack-demo
     parent: python-tempestconf-devstack-base
     description: |
@@ -303,6 +315,13 @@
     override-checkout: stable/xena
     vars:
       branch: stable/xena
+
+- job:
+    name: python-tempestconf-tempest-devstack-demo-yoga
+    parent: python-tempestconf-tempest-devstack-demo
+    override-checkout: stable/yoga
+    vars:
+      branch: stable/yoga
 
 - job:
     name: python-tempestconf-tempest-packstack-admin
