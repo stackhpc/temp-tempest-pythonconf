@@ -2,11 +2,20 @@
   include_role:
     name: ensure-tox
 
+- name: Allow git to read tempest directory
+  become: yes
+  command: git config --system --add safe.directory {{devstack_base_dir}}/tempest
+
 - name: Prepare tempest venv
   become: yes
   command: tox -r --notest -efull
   args:
     chdir: "{{devstack_base_dir}}/tempest"
+
+- name: Allow git to read plugin directories
+  become: yes
+  command: git config --system --add safe.directory {{item}}
+  with_items: "{{plugins_paths}}"
 
 - name: Install plugins
   become: yes
