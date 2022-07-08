@@ -94,13 +94,16 @@ class VolumeService(VersionedService):
             return
 
         if is_backup:
-            service = is_backup['services']
-            if not service or service[0]['state'] == 'down':
-                conf.set('volume-feature-enabled', 'backup', 'False')
-            else:
-                # post_configuration method is called with every volume (v2,
-                # v3) service, therefore set the value with priority so that it
-                # can't be overrided by this method called from other instance
-                # of volume service
-                conf.set('volume-feature-enabled', 'backup', 'True',
-                         priority=True)
+            services = is_backup['services']
+            backup_enabled = 'False'
+            for service in services:
+                if service['state'] == 'up':
+                    backup_enabled = 'True'
+                    break
+
+            # post_configuration method is called with every volume (v2,
+            # v3) service, therefore set the value with priority so that it
+            # can't be overrided by this method called from other instance
+            # of volume service
+            conf.set('volume-feature-enabled', 'backup', backup_enabled,
+                     priority=True)
