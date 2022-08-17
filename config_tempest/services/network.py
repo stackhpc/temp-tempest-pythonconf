@@ -25,6 +25,9 @@ class NetworkService(VersionedService):
         body = json.loads(body)
         self.extensions = list(map(lambda x: x['alias'], body['extensions']))
 
+    def set_versions(self):
+        super(NetworkService, self).set_versions(top_level=False)
+
     def create_tempest_networks(self, conf, network_id):
         LOG.info("Setting up network")
         self.client = self.client.networks
