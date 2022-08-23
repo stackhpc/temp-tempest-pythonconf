@@ -236,9 +236,8 @@
     override-checkout: stable/victoria
     vars:
       branch: stable/victoria
-    required-projects: &manila-tempest-plugin-pin
-      - name: openstack/manila-tempest-plugin
-        override-checkout: 1.8.0
+      devstack_localrc:
+        MANILA_INSTALL_TEMPEST_PLUGIN_SYSTEMWIDE: false
 
 - job:
     name: python-tempestconf-tempest-devstack-admin-wallaby
@@ -246,7 +245,8 @@
     override-checkout: stable/wallaby
     vars:
       branch: stable/wallaby
-    required-projects: *manila-tempest-plugin-pin
+      devstack_localrc:
+        MANILA_INSTALL_TEMPEST_PLUGIN_SYSTEMWIDE: false
 
 - job:
     name: python-tempestconf-tempest-devstack-admin-xena
@@ -287,7 +287,8 @@
     override-checkout: stable/victoria
     vars:
       branch: stable/victoria
-    required-projects: *manila-tempest-plugin-pin
+      devstack_localrc:
+        MANILA_INSTALL_TEMPEST_PLUGIN_SYSTEMWIDE: false
 
 - job:
     name: python-tempestconf-tempest-devstack-demo-wallaby
@@ -295,7 +296,8 @@
     override-checkout: stable/wallaby
     vars:
       branch: stable/wallaby
-    required-projects: *manila-tempest-plugin-pin
+      devstack_localrc:
+        MANILA_INSTALL_TEMPEST_PLUGIN_SYSTEMWIDE: false
 
 - job:
     name: python-tempestconf-tempest-devstack-demo-xena
