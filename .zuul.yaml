@@ -6,12 +6,7 @@
     check:
       jobs:
         - python-tempestconf-tempest-devstack-admin
-        # TODO(kopecmartin) this job requires the following fix on devstack's
-        # side - https://review.opendev.org/c/openstack/devstack/+/844774
-        # Although that fix requires further work so in the meantime let's
-        # mark this job as non-voting to unblock the gates
-        - python-tempestconf-tempest-devstack-admin-victoria:
-            voting: false
+        - python-tempestconf-tempest-devstack-admin-victoria
         - python-tempestconf-tempest-devstack-admin-wallaby
         - python-tempestconf-tempest-devstack-admin-xena
         - python-tempestconf-tempest-devstack-admin-yoga
@@ -21,13 +16,7 @@
             voting: false
         - python-tempestconf-tempest-packstack-demo:
             voting: false
-        # TODO(kopecmartin) refstack-client jobs are broken - tempest version
-        # in those jobs must be bumped in order to be incompatible with
-        # manila-tempest-plugin - right now they fail to install the plugin,
-        # until the following patch is merged, let's mark this non-voting
-        # https://review.opendev.org/c/openinfra/refstack-client/+/846370
         - refstack-client-devstack-master:
-            voting: false
             irrelevant-files: &irrelevant-files
               - config_tempest/tests/.*$
               - ^doc/.*$
@@ -64,23 +53,14 @@
     gate:
       jobs:
         - python-tempestconf-tempest-devstack-admin
-        # TODO(kopecmartin) this job requires the following fix on devstack's
-        # side - https://review.opendev.org/c/openstack/devstack/+/844774
-        # Although that fix requires further work so in the meantime let's
-        # mark this job as non-voting to unblock the gates
-        #- python-tempestconf-tempest-devstack-admin-victoria
+        - python-tempestconf-tempest-devstack-admin-victoria
         - python-tempestconf-tempest-devstack-admin-wallaby
         - python-tempestconf-tempest-devstack-admin-xena
         - python-tempestconf-tempest-devstack-admin-yoga
         - python-tempestconf-tempest-devstack-demo
         - python-tempestconf-tempest-devstack-admin-plugins
-        # TODO(kopecmartin) refstack-client jobs are broken - tempest version
-        # in those jobs must be bumped in order to be incompatible with
-        # manila-tempest-plugin - right now they fail to install the plugin,
-        # until the following patch is merged, let's skip this job
-        # https://review.opendev.org/c/openinfra/refstack-client/+/846370
-        #- refstack-client-devstack-master:
-        #    irrelevant-files: *irrelevant-files
+        - refstack-client-devstack-master:
+            irrelevant-files: *irrelevant-files
         - tripleo-ci-centos-9-content-provider:
             irrelevant-files: *irrelevant-files
         - tripleo-ci-centos-9-scenario002-standalone:
@@ -165,7 +145,7 @@
 
 - job:
     name: python-tempestconf-packstack-base
-    parent: packstack-centos8s
+    parent: packstack-centos9
     description: Base job for python-tempestconf on packstack environment
     required-projects:
       - x/packstack
