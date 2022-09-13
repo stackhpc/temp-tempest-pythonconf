@@ -55,6 +55,7 @@ class ShareService(VersionedService):
             dhss = set()
             capability_snapshot_support = set()
             capability_create_share_from_snapshot_support = set()
+            capability_thin_provisioning = set()
             for pool in pools:
                 backends.add(pool['backend'])
                 pool_capabilities = pool['capabilities']
@@ -65,6 +66,11 @@ class ShareService(VersionedService):
                     pool_capabilities['snapshot_support'])
                 capability_create_share_from_snapshot_support.add(
                     pool_capabilities['create_share_from_snapshot_support'])
+                thin_provisioning = pool_capabilities.get('thin_provisioning')
+                thin_provisioning = ([thin_provisioning]
+                                     if not isinstance(thin_provisioning, list)
+                                     else thin_provisioning)
+                capability_thin_provisioning.add(any(thin_provisioning))
 
             conf.set('share', 'backend_names', ','.join(backends))
             conf.set('share', 'enable_protocols', ','.join(enable_protocols))
@@ -82,6 +88,8 @@ class ShareService(VersionedService):
                      str(any(capability_snapshot_support)))
             conf.set('share', 'capability_create_share_from_snapshot_support',
                      str(any(capability_create_share_from_snapshot_support)))
+            conf.set('share', 'capability_thin_provisioned',
+                     str(any(capability_thin_provisioning)))
 
             if len(backends) > 1:
                 conf.set('share', 'multi_backend', 'True')
