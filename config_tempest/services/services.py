@@ -69,6 +69,12 @@ class Services(object):
                           "catalog. Services without endpoint will not be "
                           "discovered.")
             services = self.catalog
+
+        services = [s for s in services if not
+                    (self._conf.has_option('service_available', s['name']) and
+                     self._conf.get('service_available', s['name'])
+                     in ['', None, 'False'])]
+
         return services
 
     def get_service_data(self, s_name, s_type):

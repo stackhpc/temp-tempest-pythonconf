@@ -106,6 +106,21 @@ The generated ``tempest.conf`` will look like:
     key = value
     <omitted some content>
 
+Use override values to disable services
++++++++++++++++++++++++++++++++++++++++
+
+Override values can be used to stop running tests on certain services, should you not wish to test these.
+For example:
+
+.. code-block:: shell-session
+
+    $ discover-tempest-config \
+        --debug \
+        --out etc/tempest.conf \
+        service_available.octavia False \
+
+Will disable tempest from running Octavia tests, and prevent configuration of the ``[load_balancer]`` section in the
+generated ``tempest.conf``.
 
 Prevent some key-value pairs to be set in tempest.conf
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
